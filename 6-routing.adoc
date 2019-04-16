@@ -1,0 +1,438 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Routing
+
+Nous souhaitons ajouter de nouvelles fonctionnalités à notre application:
+
+* Ajouter une vue _Dashboard_
+* Ajouter la possiblité de naviguer entre les vues _Heroes_ et _Dashboard_
+* Quand un utilisateur clique sur le nom d'un héros dans l'une des vues, naviguer vers le héros sélectionné
+* Quand un utilisateur clique sur un _deep link_ dans un email, ouvrir la vue détail de ce héros
+
+== Ajouter l'AppRoutingModule
+
+Si vous avez indiqué l'option `--routing` dans la commande `ng new` au moment de la création du projet, cette étape est déjà réalisée, vous pouvez <<Ajouter des routes,passer à l'étape suivante>>.
+Dans le cas contraire, vous pouvez générer l' `AppRoutingModule` grâce à la commande suivante:
+[source, bash]
+----
+ng generate module app-routing --flat --module=app
+----
+
+NOTE: `--flat` ajoute le fichier directement dans `src/app` plutôt que dans son propre répertoire. +
+`--module=app` indique au CLI de l'ajouter dans le tableau d' `imports` de l'AppModule.
+
+Vous ne déclarerez généralement jamais de composant dans un module de routing, vous pouvez donc supprimer `declarations` dans les metadata. Nous n'utiliserons pas non plus le CommonModule, vous pouvez donc le supprimer du tableau des metadata et retirer sa ligne d'import.
+Ajoutez maintenant un tableau `exports` en-dessous d' `imports` dans les metadata, et ajoutez-y `RouterModule`.
+C'est cet export qui nous permettra de rendre les routes disponibles pour êtres utilisées dans les composants d' `AppModule` qui en auront besoin.
+
+=== Ajouter des routes
+
+Les _Routes_ permettent au router de savoir quelle vue afficher quand un utilisateur clique sur un lien ou colle une URL dans la barre d'adresse du navigateur.
+
+Une route Angular classique a deux propriétés:
+1. `path`: une string qui matche l'URL du navigateur.
+2. `component`: le composant que le router devrait créer quand il navigue vers cette route.
+
+Nous souhaitons naviguer vers le `HeroesComponent` quand l'URL ressemble à quelque chose comme `localhost:4200/heroes`.
+
+Définissez votre première route dans une constante `routes` de type `Routes`, selon la syntaxe suivante:
+[source, javascript]
+----
+const routes: Routes = [
+  { path: 'my-path', component: MyComponent }
+];
+----
+
+=== _RouterModule.forRoot()_
+
+Vous devez d'abord initialiser le router pour qu'il écoute les changements d'URL du navigateur.
+
+Ajoutez `RouterModule` aux `imports` dans les metadata, et configurez-le comme suit:
+[source, javascript]
+----
+imports: [ RouterModule.forRoot(routes) ],
+----
+
+TIP: La méthode s'appelle `forRoot` parce que vous configurez le router au niveau racine de l'application. La méthode `forRoot()` fournit les providers de service et les directives nécessaires pour le routing, et accomplit la navigation initiale en fonction de l'URL courante du navigateur.
+
+== Ajouter RouterOutlet
+
+Ouvrez le template d' `AppComponent` et remplacez-y `<sw-heroes>` par `<router-outlet>`.
+
+Vous avez supprimé `<sw-heroes>` parce que vous n'afficherez le `HeroesComponent` que quand l'utilisateur naviguera vers son URL.
+
+Le `<router-outlet>` indique au router où afficher les vues liées au routing.
+
+NOTE: Le `RouterOutlet` est une des directives du router qui ont été rendues disponibles dans `AppComponent` parce que `AppModule` importe `AppRoutingModule` qui exporte `RouterModule`.
+
+==== Essayez-le
+
+Le navigateur devrait se rafraîchir et l'application devrait toujours s'afficher, mais pas la liste des héros.
+
+Si vous jetez un oeil à l'URL courante, vous devriez vous trouver sur `localhost:4200`. Le chemin du `HeroesComponent` est `/heroes`.
+
+Ajoutez `/heroes` à la fin de l'URL, et la page devrait se rafraîchir pour cette fois afficher la liste des héros, comme souhaité.
+
+== Ajouter un lien de navigation (`routerLink`)
+
+Ca semble évident, mais les utilisateurs ne devraient pas avoir à coller un bout d'URL dans la barre d'adresse pour naviguer dans l'application. Ils devraient pouvoir naviguer via des liens cliquables.
+
+Dans le template d' `AppComponent`, ajoutez un élément `<nav>` juste sous le titre, et à l'intérieur, un élément `<a>` permettant d'accéder à la liste des héros, selon l'exemple suivant:
+[source, html]
+----
+<nav>
+  <a routerLink="/heroes">Heroes</a>
+</nav>
+----
+
+Un attribut `routerLink` est assigné avec la valeur `heroes`, la string que le router va matcher avec la route vers le `HeroesComponent`. Le `routerLink` est le sélecteur de la directive `RouterLink` qui lie les clics de l'utilisateur à la navigation. C'est une autre des directives publiques du `RouterModule`.
+
+Au rafraîchissement du navigateur, vous devriez désormais pouvoir cliquer sur le lien pour afficher la liste des héros.
+
+=== Vous reprendrez bien un peu de CSS ?
+
+Nous avons désormais une navigation fonctionnelle, mais pas super sexy... On va ajouter un peu de CSS dans `app.component.scss` pour y remédier:
+[source, css]
+----
+nav a {
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+nav a:visited, a:link {
+  color: #607d8b;
+}
+
+nav a:hover {
+  color: #039be5;
+  background-color: #cfd8dc;
+}
+
+nav a.active {
+  color: #039be5;
+}
+----
+
+== Ajouter une vue dashboard
+
+Le routing a plus de sens quand il y a plusieurs pages entre lesquelles naviguer. Pour l'instant, nous n'avons que la vue des héros.
+
+Créez un `DashboardComponent` avec le CLI Angular:
+[source, bash]
+----
+ng g c dashboard
+----
+
+=== La classe DashboardComponent
+
+Nous allons commencer par implémenter les méthodes du dashboard.
+
+1. Créer un attribut heroes, le type comme tableau de héros, et l'initialiser avec un tableau vide.
+2. Créer une méthode `getHeroes` qui va subscribe à la méthode du `heroService` (qu'il faudra préalablement ajouter dans le constructor).
+3. Dans le subscribe, ajouter l'instruction suivante: `heroes => this.heroes = heroes.slice(1, 5)`.
+4. Appeler la méthode `getHeroes` dans `ngOnInit`.
+
+=== Le template du dashboard
+
+1. Ajouter un titre `<h3>` affichant "Top Heroes"
+2. Ajouter une `<div>` de classes `grid grid-pad`
+3. Dans cette `<div>`, ajouter un élément `<a>` de classe `col-1-4`, et y appliquer un `ngFor` sur l'attribut `heroes`
+4. Dans `<a>`, ajouter une div de classes `module hero`
+5. Dans cette `<div>`, ajouter un titre `<h4>` affichant le nom du héros courant du `ngFor`
+
+=== Et pour finir, "un peu" de CSS
+
+Ajoutez les règles de style suivants dans `dashboard.component.scss`:
+[source, css]
+----
+[class*='col-'] {
+  float: left;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+[class*='col-']:last-of-type {
+  padding-right: 0;
+}
+a {
+  text-decoration: none;
+}
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+h3 {
+  text-align: center;
+  margin-bottom: 0;
+}
+h4 {
+  position: relative;
+}
+.grid {
+  margin: 0;
+}
+.col-1-4 {
+  width: 25%;
+}
+.module {
+  padding: 20px;
+  text-align: center;
+  color: #eee;
+  max-height: 120px;
+  min-width: 120px;
+  background-color: #607d8b;
+  border-radius: 2px;
+}
+.module:hover {
+  background-color: #eee;
+  cursor: pointer;
+  color: #607d8b;
+}
+.grid-pad {
+  padding: 10px 0;
+}
+.grid-pad > [class*='col-']:last-of-type {
+  padding-right: 20px;
+}
+@media (max-width: 600px) {
+  .module {
+    font-size: 10px;
+    max-height: 75px; }
+}
+@media (max-width: 1024px) {
+  .grid {
+    margin: 0;
+  }
+  .module {
+    min-width: 60px;
+  }
+}
+----
+=== OK, ça fait quoi tout ça ?
+
+Le _template_ présente une grille de liens sur des noms de héros.
+
+* `*ngFor` affiche autant de liens que d'éléments dans le tableau `heroes`.
+* Les liens sont stylisés en blocs colorés par le CSS.
+* Les liens ne vont pour l'instant nulle part, mais ça va bientôt changer.
+
+La _classe_ est similaire à celle du `HeroesComponent`.
+
+* Elle définit un tableau `heroes`.
+* Le constructeur injecte le `HeroService` dans un attribut privé `heroService`.
+* Le hook `ngOnInit()` appelle `getHeroes`.
+
+La méthode `getHeroes` retourne la liste des héros tronquée, des positions 1 à 5, soit seulement 4 "Top Heroes" (les 2ème, 3ème, 4ème et 5ème).
+
+=== Ajouter la route du dashboard
+
+Pour naviguer vers le dashboard, le router a besoin de la route appropriée.
+
+Ajoutez une route dans les `routes` d' `AppRoutingModule`, qui lie le path `dashboard` au `DashboardComponent`.
+
+=== Ajouter une route par défaut
+
+Quand l'application démarre, le navigateur pointe vers la racine de l'application. Ca ne matche aucune des routes définies, donc le navigateur ne navigue nulle part. L'espace dans `<router-outlet>` est donc vide.
+
+Pour que l'application navigue automatiquement vers le dashboard, ajoutez la route suivante dans les `routes` d' `AppRoutingModule`:
+[source, javascript]
+----
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+----
+
+Lorsque l'URL matche le path "vide", cette route redirige vers le path `/dashboard`.
+
+Au rafraîchissement du navigateur, le router charge le `DashboardComponent` et la barre d'adresse affiche l'URL `/dashboard` (si vous étiez précédemment situés sur `localhost:4200`).
+
+=== Ajouter un lien vers le dashboard
+
+On souhaite que l'utilisateur puisse naviguer entre le `DashboardComponent` et le `HeroesComponent` en cliquant sur les liens de la zone de navigation.
+
+Ajoutez un lien vers le dashboard dans `AppComponent`, sobrement intitulé "Dashboard".
+
+== Naviguer vers les détails du héros
+
+Le `HeroDetailsComponent` affiche les détails du héros sélectionné. Pour l'instant, `HeroDetailsComponent` est seulement visible en bas du `HeroesComponent`.
+
+L'utilisateur devrait pouvoir voir ces détails de 3 façons:
+1. En cliquant sur un héros dans le dashboard.
+2. En cliquant sur un héros dans la liste des héros.
+3. En collant un "deep link" directement dans la barre d'adresse du navigateur, qui indique le héros à afficher.
+
+Dans cette section, vous allez ajouter la navigation vers le `HeroDetailsComponent` et le libérer du `HeroesComponent`.
+
+=== Supprimer _hero details_ du `HeroesComponent`
+
+Quand l'utilisateur clique sur un héros dans le `HeroesComponent`, l'application devrait naviguer vers le `HeroDetailComponent`. La vue de la liste des héros ne devrait plus afficher les détails comme elle le fait maintenant.
+
+Ouvrez le template d' `HeroesComponent` et supprimez l'élément `<sw-hero-detail>`.
+
+=== Ajouter une route vers le détail
+
+Une URL comme `~/detail/:id` pourrait être une bonne route pour naviguer vers la vue de détail du héros dont l' `id` est `11`.
+
+Ouvrez `AppRoutingModule` et ajoutez une route de path `detail/:id` pour le `HeroDetailComponent`.
+
+Les deux points (:) dans le `path` indiquent que `:id` est un placeholder pour un id de héros.
+
+=== Les liens de héros du `DashboardComponent`
+
+Pour l'instant, les liens vers les héros dans le `DashboardComponent` ne font rien.
+
+Maintenant que le router sait naviguer vers le `HeroDetailComponent`, vous pouvez ajouter un `routerLink` sur l'élément `<a>`.
+N'oubliez pas que les doubles accolades d'interpolation sont également disponibles dans routerLink:
+[source, html]
+----
+<div routerLink="/my-route/{{foo.bar}}">/<div>
+----
+
+=== Les liens de héros du `HeroesComponent`
+
+Actuellement, les héros de la listes sont des `<li>` sur lesquels le clic est bindé à la méthode `onSelect()`.
+
+Retirez tous les attributs du `<li>` excepté le `*ngFor`, et ajoutez un `<a>` autour du badge et du nom du héros.
+Appliquez ensuite un `routerLink` sur l'élément `<a>`, comme vous l'avez fait dans le dashboard.
+
+Remplacez le CSS du `HeroesComponent` par celui-ci pour régler les soucis d'affichage apparus suite à ces changements:
+[source, css]
+----
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.heroes li {
+  position: relative;
+  cursor: pointer;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+
+.heroes li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.heroes a {
+  color: #888;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  width: 250px;
+}
+
+.heroes a:hover {
+  color:#607D8B;
+}
+
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+----
+
+==== Supprimer le code mort
+
+Si le `HeroesComponent` fonctionne toujours, la méthode `onSelect()` et l'attribut `selectedHero` ne sont plus utilisés.
+Nettoyer le code non utilisé d'une application est une bonne pratique, et vous vous remercierez plus tard !
+Supprimez donc ces deux éléments de la classe.
+
+== `HeroDetailComponent` routable
+
+Auparavant, l'attribut `hero` du `HeroDetailComponent` était défini par le `HeroesComponent`.
+Désormais, l'id du héros à afficher est indiqué dans l'URL au moment de la navigation (par exemple `/hero/1`).
+
+Vous allez donc devoir:
+
+* Récupérer la route courante dans le `HeroDetailComponent`.
+* En extraire l' `id`.
+* Récupérer le héros correspondant via le `HeroService`.
+
+Injectez `ActivatedRoute`, `HeroService` et `Location` dans le constructeur du `HeroDetaiLComponent` dans 3 attributs privés.
+Nous ferons ici une exception pour le nommage de l'attribut qui va instancier `ActivatedRoute`, en le nommant simplement `route`.
+
+`ActivatedRoute` contient les informations de la route de cette instance du `HeroDetailComponent`. Nous serons intéressés par la partie qui contient les paramètres d'URL.
+
+`HeroService` va récupérer les données du héros depuis le serveur distant et ce composant l'utilisera pour afficher ses détails.
+
+`Location` est un service Angular pour interagir avec le navigateur. Vous l'utiliserez plus tard pour naviguer en arrière vers la vue qui vous a amené ici.
+
+=== Extraire le paramètre _id_
+
+Dans `ngOnInit()`, appelez la méthode `getHero()` que vous allez écrire dans un instant.
+
+Définissez `getHero()` comme suit:
+
+1. Définissez une constante id prenant pour valeur `+this.route.snapshot.paramMap.get('id');`
+2. Appelez la méthode `heroService.getHero(id)` que vous allez définir un peu plus tard.
+3. Effectuez un subscribe sur cette méthode du service, et dans ce subscribe assignez la valeur de retour `hero` à l'attribut `hero` du composant.
+
+`route.snapshot` est une image statique des informations de la route un peu après que le composant ait été créé.
+`paramMap` est un dictionnaire de paramètres de route extraits depuis l'URL. La clé `"id"` retourn l'id du héros à récupérer.
+Les paramètres de route sont toujours des strings. L'opérateur (+) convertit la string en nombre, ce qu'un id de héros devrait être.
+
+=== Ajouter `HeroService.getHero()`
+
+Ouvrez `HeroService` et ajoutez-y cette méthode `getHero()`.
+[source, javascript]
+----
+getHero(id: number): Observable<Hero> {
+  // TODO: send the message _after_ fetching the hero
+  this.messageService.add(`HeroService: fetched hero id=${id}`);
+  return of(HEROES.find(hero => hero.id === id));
+}
+----
+
+TIP: Notez les backquotes (`) qui définissent un _template literal_ JavaScript pour embarquer l'id. Cette syntaxe permet généralement d'éviter de concaténer plusieurs strings via l'opérateur (+) et ainsi de faciliter la lecture.
+
+Comme `getHeroes()`, `getHero()` a une signature asynchrone, et renvoie un héros mocké dans un Observable. Cela vous permettra de ré-implémenter `getHero()` comme un vrai appel Http sans devoir changer le `HeroDetailComponent` qui l'appelle.
+
+==== Essayez-le
+
+Au rafraîchissement du navigateur, l'application devrait à nouveau fonctionner. Essayez d'accéder manuellement à l'URL `localhost:4200/detail/13` et vous devriez voir les détails de Chewbacca.
+
+=== Trouver le chemin du retour
+
+En cliquant sur le bouton "retour" du navigateur, vous pouvez revenir à la liste des héros ou au dashboard, selon la page dont vous veniez.
+
+Il serait intéressant d'avoir un bouton qui puisse faire ça sur la vue `HeroDetail`.
+
+Ajoutez un bouton intitulé "go back" en bas du template du composant, et bindez son clic à la méthode `goBack()`.
+
+Ajoutez ensuite cette méthode `goBack()` dans la classe du composant. Elle appelle la méthode `this.location.back();`.
+
+Et voilà pour le routing !
+
+Cette section est maintenant terminée, vous pouvez passer à la dernière étape:
+link:7-http.html[HTTP]

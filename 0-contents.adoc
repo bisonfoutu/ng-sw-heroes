@@ -1,0 +1,30 @@
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+= Angular - Tour of Star Wars Heroes
+
+Ce tutoriel est essentiellement basé sur le Tour of Heroes (le tutoriel officiel disponible dans la documentation d'Angular).
+
+Les objectifs de ce _remake_ sont multiples:
+
+* La traduction en français: le tutoriel officiel n'est disponible qu'en anglais, donc j'ai pensé à ceux qui galèrent avec l'anglais ! Mais ne criez pas victoire trop vite, la doc, elle reste en anglais, donc il faudra y passer à un moment...
+
+* Plus d'autonomie: si le tutoriel officiel est très complet, il a le gros désavantage de prendre beaucoup trop le lecteur par la main (on peut globalement tout copier coller sans réfléchir et ça va marcher), j'ai donc réécrit les instructions de manière à vous faire réfléchir, c'est le meilleur moyen pour que ça rentre !
+
+* Pro-tips: j'ai ajouté quelques infos/conseils supplémentaires par rapport au tutoriel officiel, basés sur mon expérience personnelle et les bonnes pratiques de développement.
+
+
+NOTE: Pour celles et ceux qui auraient déjà fait le tutoriel officiel ou qui connaissent Angular, je vous conseille dans ce cas de refaire le tutoriel officiel en prenant le temps d'aller voir les liens qui sont disséminés un peu partout, et également pour peut-être découvrir des changements qui auraient eu lieu sur les dernières versions :).
+
+Allez, y'a plus qu'à, voilà les liens des différentes sections du tutoriel:
+
+link:1-getting-started.html[1. Getting Started] +
+link:2-hero-detail.html[2. Détails d'un héros] +
+link:3-hero-list.html[3. Liste des héros] +
+link:4-master-detail.html[4. Vues Master/Detail] +
+link:5-services.html[5. Services] +
+link:6-routing.html[6. Routing] +
+link:7-http.html[7. HTTP]
+
+NOTE: un lien vers la section suivante est présent en bas de chaque section, donc vous n'aurez en théorie pas besoin de revenir sur cette page

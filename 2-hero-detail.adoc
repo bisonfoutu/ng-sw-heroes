@@ -1,0 +1,174 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Fiche d'un héros de Star Wars
+
+Il est temps de créer notre premier composant (je vous vois venir, l'AppComponent ça ne compte pas ;-) ).
+Son but sera d'afficher les informations d'un héros de Star Wars.
+
+== Créer le composant heroes
+
+Nous allons de nouveau faire appel au CLI Angular pour générer notre composant heroes:
+[source, bash]
+----
+ng generate component heroes
+----
+
+Le CLI va créer un nouveau répertoire, `src/app/heroes`, et y générer les fichiers du HeroesComponent.
+
+Ouvrez la classe TypeScript du HeroesComponent.
+
+On peut distinguer plusieurs éléments dans ce fichier:
+
+* une ligne d'imports, qui importe dans le fichier les éléments Component et OnInit depuis la librairie core d'Angular.
+* une annotation `@Component` qui contient la définition du composant sous forme de métadonnées:
+  1. `selector` - le tag html du composant.
+  2. `templateUrl` - l'emplacement du template HTML du composant
+  3. `styleUrls` - l'emplacement du fichiers de styles du composant
+
+NOTE: Le sélecteur du composant permet à un composant parent de l'identifier et de l'interpréter dans son propre template, comme n'importe quel autre tag HTML standard
+
+* La classe du composant (qui doit toujours être exportée pour pouvoir être importée dans d'autres fichiers, notamment pour le déclarer dans un module).
+
+* ngOnInit est un _lifecycle hook_. Angular appelle cette méthode peu après avoir créé un composant. C'est l'endroit privilégié pour placer le code d'initialisation du composant.
+
+=== Ajouter un attribut _hero_
+Ajoutez un attribut `hero` dans la classe du component HeroesComponent, prenant pour valeur `'Jar Jar Binks' `.
+
+=== Afficher le héros
+Ouvrez le template HTML du composant, supprimez le contenu auto-généré, et remplacez-le par un data-binding du nouvel attribut `hero` (pour rappel, il s'agit de la syntaxe entre double accolades vue précédemment pour l'attribut title dans l'AppComponent).
+
+== Afficher le HeroesComponent
+Pour afficher le HeroesComponent, vous devez l'ajouter au template de l'AppComponent.
+
+Rappelez-vous que `sw-heroes` est le sélecteur "élément" du HeroesComponent. Ajoutez donc un élément <sw-heroes> au template de l'AppComponent, juste sous le titre.
+
+Si la commande `ng serve` du CLI Angular est toujours en cours d'exécution, le navigateur devrait rafraîchir l'application et afficher à la fois le titre, et le nom du héros.
+
+== Créer un modèle Hero
+Un véritable héros est plus qu'un simple nom.
+
+Créez une interface `Hero` dans son propre fichier `hero.model.ts`, dans le répertoire `src/app/models`. Donnez-lui deux attributs, `id` et `name`.
+[source, javascript]
+----
+export interface Hero {
+  id: number;
+  name: string;
+}
+----
+
+Revenez au `HeroesComponent` et importez l'interface `Hero`.
+
+Changez le type de l'attribut `hero` en `Hero`. Initialisez-le avec un l'id `1` et le nom `Jar Jar Binks`.
+
+La page n'affiche plus le héros, c'est normal puisque `hero` n'est plus une string mais un objet.
+
+== Afficher l'objet hero
+
+Pour afficher un attribut d'un objet dans un binding, il convient d'utiliser la "dot notation". Exemple:
+[source, html]
+----
+{{ hero.id }}
+----
+
+Mettez à jour le binding dans le template pour afficher:
+
+*dans un `<h2>` le titre `Jar Jar Binks Details`
+*dans une `<div>`, un `<span>` contenant _id:_, suivi de l'id du héros
+*dans une seconde `<div>`, un `<span>` contenant _name:_, suivi du nom du héros
+
+Le navigateur devrait alors se rafraîchir et afficher les informations du héros.
+
+== Formater le texte avec l' `UppercasePipe`
+
+Les pipes sont des éléments Angular permettant de modifier le rendu visuel de certaines propriétés, sans réellement modifier la valeur des attributs associés.
+
+Pour appliquer un pipe dans un binding, il faut utiliser la syntaxe suivante:
+[source, html]
+----
+{{ hero.name | uppercase }}
+----
+Modifiez le binding dans le titre du composant pour afficher le nom du héros en majuscules.
+
+Plusieurs pipes sont disponibles par défaut dans Angular, et permettent de formatter des chaînes de caractères, des montants d'argent, des dates... Et bien entendu, vous pouvez également créer vos propres pipes !
+
+== Modifier le héros
+
+Les utilisateurs de l'application devrait pouvoir modifier le nom du héro via un input de type texte.
+
+L'input devrait à la fois afficher l'attribut `name` du héros et mettre à jour cette propriété en temps réel lorsque l'utilisateur modifie la valeur de l'input. Cela signifie que la donnée doit transiter du template vers la classe mais également de la classe vers le template.
+
+Pour automatiser ce lien, nous allons mettre en place un "two-way data binding" entre l'élément `<input>` et l'attribut `hero.name`.
+
+=== Two-way binding
+
+Modifiez la zone de détails (sous le titre) dans le template du `HeroesComponent` afin qu'elle ressemble à ceci:
+[source, html]
+----
+<div>
+  <label>name:
+    <input [(ngModel)]="hero.name" placeholder="name"/>
+  </label>
+</div>
+----
+*[(ngModel)]* est la syntaxe du two-way binding dans Angular.
+
+Dans notre cas, elle permet de binder l'attribut `hero.name` à l'input HTML pour que la donnée soit liée dans les deux sens:
+depuis l'attribut `hero.name` vers l'input, et depuis l'input vers `hero.name`.
+
+=== Le module _FormsModule_ manquant
+
+Vous remarquerez que l'application ne fonctionne plus depuis que vous avez ajouté `[(ngModel)]`.
+Pour voir l'erreur à l'origine de ce dysfonctionnement, ouvrez les DevTools du navigateur (via la touche F12). Vous devriez voir le message suivant dans la console:
+----
+Template parse errors:
+Can't bind to 'ngModel' since it isn't a known property of 'input'.
+----
+Si `ngModel` est bien une directive Angular valide, elle n'est pas disponible par défaut.
+Elle appartient au module `FormsModule`, et vous devrez l'ajouter manuellement pour l'utiliser.
+
+== _AppModule_
+
+Angular a besoin de savoir comment les éléments de votre application s'assemblent et de quels autres fichiers et librairies elle a besoin. Ces informations sont appelées _metadata_.
+
+Certaines de ces metadata sont présentes dans les décorateurs `@Component` que vous avez pu observer dans les classes des composants. Un autre type de metadata primordial se situe dans les décorateurs `@NgModule`.
+
+Le plus important de ces décorateurs `@NgModule` annote la classe du module racine *AppModule*.
+
+Le CLI Angular a généré une classe AppModule dans le fichier `src/app/app.module.ts` lorsqu'il a créé le projet. C'est dans ce fichier que vous allez importer le module `FormsModule`.
+
+=== Importer _FormsModule_
+
+Ouvrez l' `AppModule` (app.module.ts) et importez le symbole `FormsModule` depuis la librairie `@angular/forms`:
+[source, javascript]
+----
+import { FormsModule } from '@angular/forms';
+----
+
+Ajoutez ensuite le FormsModule au tableau d'imports dans les metadata de `@NgModule`, sous le `BrowserModule`.
+
+TIP: La plupart des IDE modernes (comme VSCode et Webstorm/IDEA) disposent d'une fonction d'import automatique des symboles utilisés dans les fichiers Angular. Il suffit alors d'ajouter le symbole souhaité directement dans le code (dans notre cas, dans le tableau des imports), et l'IDE suggérera d'ajouter la ligne d'import automatiquement. Sur Webstorm/IDEA, le raccourci dédié pour ce faire est Alt+Entrée.
+
+Lorsque le navigateur se rafraîchira, l'erreur devrait disparaître et vous devriez pouvoir modifier le nom du héros, et voir les modifications en temps réel.
+
+=== Déclarer le HeroesComponent
+
+Tous les composants doivent être déclarés dans _un et un seul_ `NgModule`.
+
+Vous n'avez pas déclaré le `HeroesComponent`. Alors comment l'application peut-elle fonctionner ?
+
+Les plus attentifs auront pu remarquer que ce composant est présent dans le tableau `declarations` de l'_AppModule_, ainsi qu'une occurrence parmi les lignes d'import au début du fichier.
+
+Lorsque vous avez généré le composant via le CLI Angular, celui-ci l'a automatiquement déclaré dans l'AppModule.
+
+Cette section est maintenant terminée, vous pouvez passer à l'étape suivante:
+link:3-hero-list.html[Liste des héros]

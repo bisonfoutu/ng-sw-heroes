@@ -1,0 +1,276 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Services
+
+L'application récupère et affiche actuellement des données mockées.
+Après le refactoring que vous allez opérer dans cette section, le `HeroesComponent` simplifié, concentré sur la gestion de la vue. Il sera également plus facile de le tester unitairement avec un service de mock.
+
+== Pourquoi des services ?
+
+Les composants ne devraient pas récupérer ou sauvegarder directement de données, et certainenement pas afficher volontairement des données mockées. Leur rôle est de présenter les données, et déléguer l'accès aux données à un service.
+
+Dans cette section, vous allez créer un `HeroService` que toutes les classes de l'application peuvent utiliser pour récupérer des héros. Nous n'allons pas instancier ce service avec le mot-clé `new` comme on instancierait un objet d'une classe lambda, mais nous allons plutôt utiliser l'injection de dépendance d'Angular pour l'injecter dans le constructeur du `HeroesComponent`.
+
+Les services sont un excellent moyen de partager de l'information entre des classes qui ne se connaissent pas entre elles.
+Vous allez créer un `MessageService` et l'injecter à deux endroits:
+1. dans le `HeroService`, qui utilisera le service pour envoyer un message.
+2. dans le `MessagesComponent`, qui affichera ce message.
+
+== Création du `HeroService`
+
+Comme pour les composants, vous allez utiliser le CLI Angular pour créer le service, nommé `hero`.
+[source, bash]
+----
+ng g service services/hero
+----
+
+La commande génère le squelette de la classe du `HeroService` dans `src/app/services/hero.service.ts`. Ouvrez ce fichier.
+
+=== Les services _@Injectable()_
+
+Vous pouvez remarquer que le nouveau service importe le symbole `Injectable` d'Angular, et annote sa classe avec le décorateur `@Injectable()`. Cela permet d'indiquer que cette classe participe au système d'injection de dépendances. La classe `HeroService` va fournir un service injectable, qui peut également avoir ses propres dépendances.
+Pour le moment il n'a aucune dépendance, mais il en aura bientôt.
+
+Le décorateur `@Injectable()` accepte un objet de metadata pour le service, comme c'étaot le cas pour le décorateur `@Component()` dans les classes de vos composants.
+
+=== Récupérer les données de héros
+
+Le `HeroService` pourrait récupérer les données depuis n'importe où - une web API, le localStorage, ou un mock de données.
+
+En enlevant l'accès direct aux données des composants, vous vous donnez la possibilité de changer d'avis sur l'implémentation à tout instant, sans devoir toucher à vos composants. Ils n'ont pas connaissance du fonctionnement du service.
+
+Nous allons continuer à fournir des données de héros mockées pour le moment.
+
+Créez une méthode `getHeroes()` qui retourne le mock `HEROES` créé plus tôt dans le projet. Précisez son type de retour en tableau de `Hero`. Les retours de méthodes peuvent se typer de la même manière que les attributs, comme suit:
+[source, javascript]
+----
+myMethod(): myReturnType {
+  return myReturnValue
+}
+----
+
+"" Mise à disposition du `HeroService`
+
+Vous devez rendre le `HeroService` disponible pour le système d'injection de dépendance avant qu'Angular puisse l'injecter dans le `HeroesComponent`. Vous pouvez le faire en déclarant un _provider_. Un provider est un élément qui peut créer ou délivrer un service; dans ce cas il instancie la classe `HeroService` pour mettre à disposition le service.
+
+Maintenant, vous devez vous assurer que le `HeroService` est déclaré comme provider de ce service. Vous le déclarez avec un _injector_ qui est responsable de choisir d'injecter le provider où il est nécessaire.
+
+Par défaut, la commande du CLI Angular `ng generate service` déclare un provider sur le _root injector_ pour votre service dans les metadata du décorateur `@Injectable()`.
+
+Si vous regardez l'instruction `@Injectable` juste au-dessus de la définition de la classe `HeroService`, vous pourrez constater que la metadata `providedIn` a bien pour valeur 'root'.
+
+Quand vous "providez" le service au niveau root, Angular crée une unique instance partagée du `HeroService`, and l'injecte dans toute classe qui le demande. Déclarer le provider dans les metadata d' `@Injectable()` permet également à Angular d'optimiser une application en retirant le service s'il n'est finalement pas utilisé.
+
+Le `HeroService` est désormais prêt à être connecté au `HeroesComponent`.
+
+== Mise à jour du HeroesComponent
+
+Ouvrez le fichier de la classe `HeroesComponent`.
+
+Supprimez l'import de `HEROES`, puisque vous n'en aurez plus besoin.
+
+Retirez l'affectation de l'attribut `heroes` à `HEROES` pour ne conserver que sa déclaration et son typage.
+
+=== Injection du HeroService
+
+Ajoutez un paramètre privé `heroService` de type `HeroService` dans le constructeur, selon la syntaxe suivante:
+[source, javascript]
+----
+constructor(private myService: MyService) { }
+----
+
+Le paramètre définit un attribut privé `heroService` et l'identifie simultanément comme point d'injection du `HeroService`.
+
+Quand Angualr crée le `HeroesComponent`, le système d'injection de dépendance affecte l'attribut `heroService` à l'instance singleton du `HeroService`.
+
+=== Ajouter _getHeroes()_
+
+Créez une méthode pour récupérer les héros depuis le service.
+Cette méthode, qu'on appellera sobrement `getHeroes` doit simplement affecter à l'attribut `heroes` le retour de la méthode `getHeroes` du `HeroService`, selon la syntaxe suivante:
+[source, javascript]
+----
+this.myAttribute = this.myService.myServiceMethod();
+----
+
+=== Appel dans ngOnInit
+
+Vous pourriez appeler cette méthode `getHeroes` directement dans le constructeur du composant, mais ce n'est pas une bonne pratique.
+
+De manière générale, il vaut mieux réserver le constructeur pour des initialisations simples comme relier des paramètres du constructeur à des attributs du composant. Le constructeur ne devrait _rien faire_. Il ne devrait surtout pas appeler une fonction qui fait un appel HTTP à un serveur distant comme un service de données le ferait.
+
+A la place, appelez plutôt `getHeroes()` dans le _lifecycle hook ngOnInit_ et laissez Angular appeler ngOnInit au moment approprié après avoir construit une instance du `HeroesComponent`.
+
+=== Relax and contemplate
+
+Une fois l'application rafraîchie dans votre navigateur, prenez le temps de la tester et de constater que celle-ci affiche toujours une liste de héros, et le détail du héros voulu à la sélection.
+
+== Données en Observable
+
+La méthode `HeroService.getHeroes()` a une _signature synchrone_, qui implique que le `HeroService` peut récupérer les héros de manière synchrone (entendre avec une réponse immédiate). Le `HeroesComponent` consomme donc les résultats de `getHeroes()` comme si les héros pouvaient être récupérés de manière synchrone.
+[source, javascript]
+----
+this.heroes = this.heroService.getHeroes();
+----
+
+Dans un cas réel, ça ne fonctionnera pas. On s'en sort parce que le service renvoie des données mockées, donc accessible instantanément. Mais bientôt, l'application va récupérer des héros depuis un serveur distant, ce qui est intrinsèquement une opération aysnchrone.
+
+Le `HeroService` doit attendre la réponse du serveur, donc `getHeroes()` ne peut pas répondre immédiatement avec des données de héros, et le navigateur ne va pas se figer pendant que le service attend la réponse.
+
+`HeroService.getHeroes()` doit avoir une signature asynchrone, d'une manière ou d'une autre.
+
+Elle peut prendre une callback. Ou retourner une `Promise`. Ou encore un `Observable`.
+
+Nous allons prendre le parti de retourner un Observable, notamment parce que nous utiliserons ensuite le `HttpClient` Angular, qui lui, retourne des Observables.
+
+=== Observable & _HeroService_
+
+`Observable` est une des classes clés de la librairie RxJS.
+
+Dans la section sur HTTP que nous verrons plus tard, vous apprendrez que le `HttpClient` d'Angular retourne des `Observables` de RxJS. Dans cette section, vous allez simuler la récupération de données depuis un serveur via la fonction `of()` de RxJS, qui permet de créer un Observable à partir de données disponibles de manière synchrone.
+
+Ouvrez le fichier du `HeroService`, et faites évoluer la méthode `getHeroes`.
+1. Remplacez la valeur de retour `HEROES` par `of(HEROES)`.
+2. Modifiez le type de retour dans la définition de la fonction par `Observable<Hero[]>`.
+
+`of(HEROES)` retourne un `Observable<Hero[]>` qui émet une _unique valeur_, le tableau de héros mockés.
+
+NOTE: Dans la section sur HTTP, vous appellerez `HttpClient.get<Hero[]>()` qui retourne également un `Observable<Hero[]>` qui émet une _unique valeur_, un tableau de héros depuis le body de la réponse HTTP.
+
+=== Souscrire dans le _HeroesComponent_
+
+Avant nos dernières modifications, la méthode `HeroService.getHeroes` renvoyait un tableau de héros `Hero[]`. Elle retourne désormais un `Observable<Hero[]>`.
+
+Vous allez devoir adapter le `HeroesComponent` pour appliquer ce changement.
+
+Retrouvez la ligne sur laquelle on assignait le résultat de `getHeroes` à l'attribut `this.heroes`, elle devrait ressembler à ceci:
+[source, javascript]
+----
+this.heroes = this.heroService.getHeroes();
+----
+
+Il va vous falloir l'adapter pour souscrire à l' `Observable<Hero[]>` maintenant renvoyé par le service, selon la syntaxe suivante:
+[source, javascript]
+----
+this.myService.myMethod().subscribe(myResult => this.myAttribute = myResult);
+----
+
+`Observable.subscribe()` est l'élément critique de cette modification.
+
+La version précédente assignait un tableaude héros à l'attribut `heroes`. L'assignation se produit de manière synchrone, comme si le serveur retournait les héros instantanément ou si le navigateur pouvait geler l'écran pendant qu'il attend la réponse.
+
+Cela ne fonctionnera pas lorsque le `HeroService` fera de véritables requêtes à un serveur distant.
+
+La nouvelle version attend que l' `Observable` émette le tableau de héros (ce qui pourrait arrivait tout de suite ou dans plusieurs minutes). Ensuite, le `subscribe` passe le tableau émis à une callback (la méthode appelée une fois la réponse du serveur obtenue), qui affecte la valeur à l'attribut `heroes`.
+
+== Afficher des messages
+
+Dans cette section vous allez:
+
+* ajouter un `MessagesComponent` qui affiche les messages de l'application en bas de l'écran.
+* créer un `Injectable`, le service global `MessagesService`, pour envoyer les messages à afficher.
+* injecter le `MessageService` dans le `HeroService`.
+* afficher un message quand le `HeroService` récupère les héros avec succès.
+
+=== Création du _MessagesComponent_
+
+Utilisez le CLI pour créer le MessagesComponent.
+
+Le CLI va créer les fichiers du composant dans le répertoire `src/app/messages` et déclarer le `MessagesComponent` dans `AppModule`.
+
+Modifiez le template d' `AppComponent` pour afficher le `MessagesComponent`, en ajoutant l'élément `<sw-messages>` juste sous `<sw-heroes>`.
+
+Vous devriez voir apparaître le paragraphe par défaut du composant en bas de la page.
+
+=== Création du _MessageService_
+
+Utilisez le CLI pour créer le `MessageService` dans `src/app/services`.
+
+Ouvrez le `MessageService` et ajoutez-y les éléments suivants:
+
+*un attribut messages de type `string[]` initialisé à un tableau vide (`[]`).
+*une méthode add prenant pour paramètre un `message` de type `string`, qui ajoute ce message au tableau `this.messages`.
+*une méthode clear qui ne prend pas de paramètre, et qui ré-assigne `this.message` à un tableau vide.
+
+Le service expose donc son cache de `messages` et 2 méthodes, l'un qui ajoute un message au cache, et l'autre qui nettoie ce cache.
+
+=== Injection dans le `HeroService`
+
+Ré-ouvrez le `HeroService`, et injectez-y le `MessageService` dans son constructeur en tant qu'attribut `private`.
+
+NOTE: Il s'agit d'un scénario de type "_service-in-service_": vous injectez le `MessageService` dans le `HeroService`, qui est lui-même injecté dans le `HeroesComponent`.
+
+=== Envoi d'un message depuis le `HeroService`
+
+Modifiez la méthode `getHeroes` pour envoyer le message 'HeroService: fetched heroes' quand les héros sont récupérés.
+
+=== Affichage du message depuis le `HeroService`
+
+Le `MessagesComponent` devrait afficher tous les messages, incluant celui envoyé par le `HeroService` lorsqu'il récupère les héros.
+
+Ouvrez le `MessagesComponent` et injectez le `MessageService` dans le constructeur en tant qu'attribut `public`.
+L'attribut `messageService` *doit être public* parce que vous allez l'utiliser dans le template.
+
+WARNING: Angular n'accepte les bindings dans les templates que sur des attributs de composant publics.
+
+== Ajout du binding au _MessageService_
+
+Dans le template du `MessagesComponent`, ajoutez les éléments suivants:
+1. Un titre 'Messages' dans un `<h2>`.
+2. Un bouton de classe `clear`, affichant le texte `clear`, et qui au clic exécute la méthode `messageService.clear()`.
+3. Une liste de div affichant les messages du `messageService` via la directive `ngFor`.
+4. Pour éviter des erreurs au démarrage de l'application, encapsulez ces éléments dans un `<ng-template>` disposant d'une directive `ngIf` qui affiche le contenu seulement si la longueur du tableau `messages` du `messageService` est positive.
+
+Il ne reste qu'à ajouter un peu de CSS sur le composant (dans `messages.component.scss)` pour rendre tout ça un peu plus sexy :)
+[source, css]
+----
+/* MessagesComponent's private CSS styles */
+h2 {
+  color: red;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+body {
+  margin: 2em;
+}
+body, input[text], button {
+  color: crimson;
+  font-family: Cambria, Georgia;
+}
+
+button.clear {
+  font-family: Arial;
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+}
+button:hover {
+  background-color: #cfd8dc;
+}
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+button.clear {
+  color: #888;
+  margin-bottom: 12px;
+}
+----
+
+Une fois la page rechargée, vous devriez voir apparaître le message du `HeroService` en bas de la page, dans la zone des messages. Cliquez sur le bouton, et il devrait disparaître (jusqu'au prochain rechargement de la page bien entendu).
+
+Cette section est maintenant terminée, vous pouvez passer à l'étape suivante:
+link:6-routing.html[Routing]

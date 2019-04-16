@@ -1,0 +1,223 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Afficher une liste de Héros
+
+Nous allons désormais voir comment afficher une liste de héros, et donner aux utilisateurs la possibilité de sélectionner un héros pour afficher ses détails.
+
+== Créer un mock de héros
+Nous allons avoir besoin de héros à afficher.
+Plus tard, nous les récupérerons depuis une API distante. Pour l'instant, nous allons créer un mock et faire comme si il provenait de cette API.
+
+Créez un fichier `mock-heroes.ts` dans le répertoire `src/app/`. Définissez-y une constante HEROES, typée en tableau de _Hero_, et contenant 10 héros.
+Le fichier devrait ressembler à l'exemple ci-dessous:
+[source, javascript]
+----
+import { Hero } from './models/hero.model';
+
+export const HEROES: Hero[] = [
+  { id: 11, name: 'Anakin Skywalker' },
+  { id: 12, name: 'Wilhuff Tarkin' },
+  { id: 13, name: 'Chewbacca' },
+  { id: 14, name: 'Han Solo' },
+  { id: 15, name: 'Greedo' },
+  { id: 16, name: 'Jabba Desilijic Tiure' },
+  { id: 18, name: 'Wedge Antilles' },
+  { id: 19, name: 'Jek Tono Porkins' },
+  { id: 20, name: 'Yoda' },
+  { id: 21, name: 'Palpatine' }
+];
+----
+
+== Afficher les héros
+Nous allons maintenant afficher la liste des héros en haut du `HeroesComponent`.
+Ouvrez la classe du `HeroesComponent` et importez le mock `HEROES`.
+[source, javascript]
+----
+import { HEROES } from '../mock-heroes';
+----
+
+Dans le même fichier (`HeroesComponent`), définissez un attribut nommé `heroes`, prenant pour valeurs le mock HEROES précédemment importé, pour pouvoir ensuite le binder dans le template.
+
+=== Lister les héroes avec _*ngFor_
+
+Ouvrez le template HTML du `HeroesComponent` et faîtes les modifications suivantes:
+
+* Ajouter un titre `<h2>` en haut du fichier indiquant _My Star Wars Heroes_
+* Juste en-dessous, ajoutez une liste non-ordonnée (`<ul>`) de classe `heroes`
+* Insérez ensuite un élément `<li>` dans `<ul>`, qui affichera l'id de l'attribut `hero` dans un `<span>` de classe `badge`, suivi juste après le span du nom de `hero`.
+
+Il ne reste plus qu'à ajouter la directive `*ngFor` sur `<li>`, comme ceci:
+[source, html]
+----
+<li *ngFor="let hero of heroes">
+----
+`*ngFor` est la directive de répétition d'Angular. Elle permet de répéter l'élément sur lequel elle est appliquée pour chaque élément de la liste fournie.
+Dans cet exemple:
+
+* `<li>` est l'élément hôte
+* `heroes` est la liste disponible dans la classe du `HeroesComponent`
+* `hero` contient le héros courant à chaque itération sur la liste
+
+NOTE: N'oubliez pas l'astérisque (*) devant ngFor. C'est une partie indispensable de la syntaxe.
+
+Lorsque le navigateur se rafraîchit, la liste devrait apparaître.
+
+=== Styliser les héros
+On sait maintenant afficher des héros, mais tout ça n'est pas super sexy... Nous allons donc ajouter un peu de CSS pour rendre tout ça un peu plus user-friendly, avec notamment des effets au passage de la souris sur un héros (hover), et une indication visuel lorsqu'un héros est sélectionné.
+
+Au début du tutoriel, on avait ajouté des styles dans le fichier `src/styles.scss`. Les règles que nous avons ajouté à ce moment ne contiennent pas les styles que nous souhaitons pour cette liste de héros.
+
+Nous pourrions tout à fait ajouter de nouvelles règles à ce fichier, mais dans notre cas ce ne serait pas une bonne pratique. Le fichier `styles.scss` doit vraiment être réservé à l'ajout de règles applicables partout dans l'application.
+
+Vous aurez probablement déjà remarqué que chaque composant Angular dispose de son propre fichier SCSS. Cette approche a deux avantages:
+
+* En plaçant tout le code d'un composant au sein de son répertoire, la ré-utilisation du composant est facilitée en garantissant qu'il ait le même look et le même comportement partout où il est utilisé.
+* Par défaut, les règles CSS écrites dans le fichier d'un composant ne s'applique que sur le composant. Cela permet d'éviter les effets de bord entre les différentes briques de l'application. Il existe des moyens de passer à travers ce cloisonnement du CSS, mais ils sont à utiliser avec parcimonie, et uniquement dans des cas particuliers (c'est comme les !important, si il y en a partout c'est qu'il y a un problème de conception !).
+
+Nous allons donc ouvrir le fichier SCSS de notre HeroesComponent: `heroes.component.scss`, et y placer le code suivant:
+[source, css]
+----
+/* HeroesComponent's private CSS styles */
+.selected {
+  background-color: #CFD8DC !important;
+  color: white;
+}
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.heroes li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+.heroes li.selected:hover {
+  background-color: #BBD8DC !important;
+  color: white;
+}
+.heroes li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+.heroes .text {
+  position: relative;
+  top: -3px;
+}
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color: #607D8B;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+----
+
+== Liste/Détail
+Quand l'utilisateur clique sur un héros dans la liste, le composant devrait afficher les détails du héros sélectionné en bas de la page.
+
+Dans cette section vous allez binder une fonction sur l'événement de clic des héros de la liste, et y mettre à jour les détails du héros.
+
+=== Ajouter un binding sur l'événement de clic
+La syntaxe de binding sur le clic est la suivante:
+[source, html]
+----
+<li *ngFor="let hero of heroes" (click)="onSelect(hero)">
+----
+Les parenthèses autour de `click` disent à Angular d'écouter les événements de clic sur l'élément `<li>`. Lorsque l'utilisateur clique dans le `<li>`, Angular exécute la méthode renseignée, dans ce cas `onSelect(hero)`.
+
+`onSelect()` est une méthode du HeroesComponent que vous allez écrire dans quelques instants. Elle prend pour paramètre l'objet `hero` qui est affiché dans la balise `<li>`, celui-là même qui a été défini dans la directive `*ngFor`.
+
+=== Ajouter le handler de l'événement de clic
+
+Renommez l'attribut `hero` du component en `selectedHero`, mais ne lui assignez pas de valeur. Aucun héros ne doit être sélectionné au démarrage de l'application.
+
+Ajoutez ensuite la méthode `onSelect()`, qui assigne le héros passé en paramètre à l'attribut `selectedHero` que vous venez de renommer.
+Cette méthode prend donc un paramètre `hero` de type `Hero` (rappel de syntaxe: `param: Type`).
+
+Pour accéder à un attribut du composant au sein d'une de ses méthodes, on utilise le mot-clé `this`. Dans ce cas: `this.selectedHero`.
+
+=== Mise à jour du template
+Nous avons renommé l'attribut dans la classe, mais le template HTML référence toujours l'ancien nom, `hero`. Faites donc les modifications nécessaires.
+
+Vous pourrez rapidement remarquer que l'application ne fonctionne plus désormais. Si vous jetez un oeil à la console dans les DevTools (F12), vous pourrez constater l'erreur suivante:
+
+IMPORTANT: HeroesComponent.html:3 ERROR TypeError: Cannot read property 'name' of undefined
+
+==== Que s'est-il passé ?
+
+Au démarrage de l'application, l'attribut `selectedHero` est volontairement `undefined`.
+
+Les bindings dans le template qui réfèrent aux attributs de `selectedHero` (e.g.: `{{ selectedHero.name }}`) doivent retourner une erreur, puisqu'il n'aucun héros n'est sélectionné.
+
+Maintenant, cliquez sur un des éléments de la liste. L'application semble fonctionner de nouveau. Les héros apparaissent dans la liste et les détails du héros sélectionné sont affichés en bas de page, comme prévu.
+
+==== Le fix - cacher les détails vides avec _*ngIf_
+
+Le composant devrait afficher les détails du héros uniquement si `selectedHero` existe.
+
+Entourez les détails du héros dans une `<div>`. Ajoutez ensuite une directive `*ngIf` sur cette `<div>`, avec pour valeur `selectedHero`.
+
+>Vous remarquerez la présence d'un astérisque (*) devant ngIf, comme c'est le cas devant ngFor. Cette syntaxe est représentative des directives Angular dites structurelles, car elles modifient le DOM de l'application (le HTML final lors du rendu du template).
+
+L'erreur devrait maintenant avoir disparu.
+
+==== Pourquoi ça fonctionne
+
+Lorsque `selectedHero` est undefined, le `ngIf` retire les détails du héros du DOM. Il n'y a donc plus besoin de se préoccuper des bindings sur les attributs de `selectedHero`.
+
+Lorsque l'utilisateur sélectionne un héros, `selectedHero` a alors une valeur, et `ngIf` affiche les détails du héros dans le DOM.
+
+TIP: Il existe une seconde possibilité pour régler ce type de problèmes de binding, avec la syntaxe suivante:`{{ selectedHero?.name }}` +
+Cette syntaxe permet d'indiquer à Angular que l'attribut `selectedHero` peut ne pas être défini, et donc de ne pas générer d'erreur si ça se produit. Si cette syntaxe est plus légère dans le code, elle ne serait pas forcément appropriée dans le cas présent puisqu'il faudrait l'indiquer sur chaque binding individuellement. +
+Il convient donc de choisir d'utiliser `ngIf` ou cette syntaxe en fonction de ce qui semble être le plus pertinent.
+
+Vous pouvez également essayer de remplacer l'élément `<div>` par `<ng-container>` (en conservant la directive `ngIf` bien entendu). Vous ne devriez percevoir aucune différence dans l'application, et pourtant quelque chose a changé.
+L'élément `<ng-container>` permet d'appliquer le comportement de `ngIf` sans générer d'élémént supplémentaire dans le DOM (vous pourrez le constater en regardant le HTML généré dans les DevTools).
+Cette approche est généralement préférée à celle de la `<div>` puisqu'elle permet de ne pas alourdir inutilement le DOM.
+
+== Styliser le héros sélectionné
+
+Il est encore difficile d'identifier le héros sélectionné dans la liste puisque tous les éléments `<li>` ont la même apparence.
+
+Pour pallier ce problème, nous allons aborder une nouvelle notion permettant d'appliquer conditionnnellement une classe sur un tag HTML.
+
+Nous allons pour ce faire utiliser la classe `selected`. La syntaxe est la suivante:
+
+[source, html]
+----
+[class.selected]="hero === selectedHero"
+----
+
+Cela va avoir pour effet d'appliquer la classe `selected` uniquement sur le tag `<li>` correspondant au héros sélectionné.
+
+TIP: Une info en passant sur la syntaxe de la condition: vous êtes probablement déjà habitué à écrire des égalités avec l'opérateur `==`. Ici nous avons utilisé `===`, qui est une particularité de JavaScript, liée au typage dynamique que propose le langage. +
+L'opérateur `===` permet de vérifier que le type des deux éléments comparés est identique, en plus de l'égalité de leur valeur. +
+La condition `1 == '1' ` renvoie `true`, tandis que `1 === '1' ` renvoie false.
+
+Cette section est maintenant terminée, vous pouvez passer à l'étape suivante:
+link:4-master-detail.html[Vues Master/Detail]

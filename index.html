@@ -1,1 +1,71 @@
-My Page
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+
+  <style>
+    .top-10{
+      margin-top:10px;
+    }
+    #footer{
+      max-width:100%;
+      background-color:rgba(0,0,0,.8);
+      padding:1.25em;
+      margin-top: 1em;
+    }
+    #footer-text{
+      color:rgba(255,255,255,.8);
+      line-height:1.44;
+    }
+  </style>
+
+  <title>Web - Angular & friends</title>
+</head>
+<body>
+
+<div class="container" style="margin-top: 50px">
+
+
+  <h1><img class="img-fluid" src="assets/img/angular.svg" style="height: 100px;" alt="Logo Angular"/> <span id="year"></span> <i class="em em-spiral_calendar_pad"></i></h1>
+
+  <script>document.getElementById("year").innerHTML = `${new Date().getFullYear()}`;</script>
+
+  <div class="card-deck top-10">
+    <div class="card">
+      <img class="card-img-top" src="assets/img/star-wars-heroes.jpg" alt="Star Wars Heroes"/>
+      <div class="card-body">
+        <h5 class="card-title">Tutoriel Angular <small class="text-muted">wed. apr. 17</small></h5>
+        <p class="card-text">Tour of Star Wars Heroes </p>
+        <p class="card-text"><small class="text-muted">Last updated wed. apr. 17</small></p>
+      </div>
+      <div class="card-footer">
+        <a href="0-contents.html" class="btn btn-primary">Tutoriel</a>
+      </div>
+    </div>
+
+    <div class="card invisible"></div>
+
+    <div class="card invisible"></div>
+
+  </div>
+
+</div>
+
+<div id="footer">
+  <div id="footer-text">
+    Last updated wed. apr. 17
+  </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

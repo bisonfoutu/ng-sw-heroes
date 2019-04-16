@@ -1,0 +1,137 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Tutoriel Angular - Star Wars Heroes
+
+== Pré-requis
+Installer https://nodejs.org/fr[NodeJS] en version LTS.
+
+Une fois installé, la commande `node -v` permet de vérifier la version installée.
+
+Vérifier que npm est également installé via la commande `npm -v`.
+
+Installer le CLI (Commande Line Interface) Angular:
+[source,bash]
+----
+npm install -g @angular/cli
+----
+
+
+== Création du projet
+
+La création des projets Angular, et par la suite des composants et autres éléments se fait préférablement par le CLI Angular.
+
+Créer un projet:
+[source, bash]
+----
+ng new angular-sw-heroes --prefix sw --routing --style scss
+----
+
+Explication des options utilisées:
+
+* prefix: définit le préfixe des sélecteurs HTML des composants de l'application.
+Le composant hero aura alors comme tag HTML `<sw-hero></sw-hero>`.
+Les préfixes sont une bonne pratique à respecter dans tout projet Angular, ils permettent d'éviter des collisions avec des tags HTML d'autres librairies.
+Par défaut, le préfixe appliqué est `app`
+
+* routing: crée un module de routing dans le module de base (AppModule) de l'application.
+Ce module permet de décrire le fonctionnement de base de la navigation entre les pages de l'application.
+
+* style: définit le format des fichiers de style de l'application.
+Par défaut ces fichiers sont en CSS pur, ici on choisit de les formater en SCSS pour profiter des fonctionnalités de la librairie Sass.
+
+Nous disposons désormais d'une application paramétrée par défaut selon nos options, ainsi que de toutes les dépendances nécessaires à son fonctionnement de base.
+
+== Lancer l'application
+
+Accédez au répertoire de l'application, et lancez l'application:
+[source, bash]
+----
+cd angular-sw-heroes
+ng serve --open
+----
+
+Une page web s'ouvre sur l'URL http://localhost:4200, et affiche le contenu par défaut du composant de base de l'application.
+
+== Composants Angular
+
+Cette page correspond au composant racine de l'application, l'AppComponent.
+
+Les composants sont les éléments de base de toute application Angular.
+On ne raisonne ici plus en pages, mais toujours en composants. Une page peut alors correspondre à un composant, ou un assemblage de plusieurs composants.
+
+Les composants Angular sont (presque) toujours décomposés en 4 fichiers:
+
+* `hero.component.ts` - la classe du composant, écrite en TypeScript, qui contient sa définition et ses méthodes
+* `hero.component.html` - le template du composant, écrit en HTML.
+* `hero.component.scss` - la feuille de styles du composant, écrite en Scss (Sass)
+* `hero.component.spec.ts` - le fichier de test du composant
+
+== Premiers pas
+
+Ouvrez le projet dans votre IDE favori (Webstorm est fortement indiqué, Visual Studio Code est un bon choix également).
+Dans l'arborescence du projet, naviguez jusqu'au répertoire `src/app`, c'est ici que se situent les fichiers de notre application Angular. C'est donc ici que vous effectuerez vos premières modifications.
+
+=== Modifier le titre de l'application
+
+La page web affichée nous affiche le message suivant: _Welcome to angular-sw-heroes !_
+
+Si on regarde la classe du composant AppComponent (dans `src/app/app.component.ts`), on y trouve un attribut `title`, qui a pour valeur `angular-sw-heroes`.
+
+Modifiez cet attribut pour que l'application indique _Welcome to Star Wars Heroes_.
+
+Allons encore un peu plus loin: cette page contient encore beaucoup d'informations dont nous n'avons pas besoin.
+
+Ouvrez le template HTML du composant (`app.component.html`) et remplacez tout le contenu par
+
+[source, html]
+----
+<h1>{{ title }}</h1>
+----
+
+Cette syntaxe en doubles accolades est nommée *interpolation binding syntax*.
+Elle permet de faire le lien entre la classe et le template, en affichant ici la valeur de l'attribut title dans le tag `<h1>`.
+
+L'application devrait désormais simplement afficher le titre _Star Wars Heroes_.
+
+=== Ajouter les styles de l'application
+Lors de la génération du projet, un fichier SCSS global `styles.scss` est créé à la racine de répertoire `src`.
+
+Nous allons y ajouter les styles globaux de l'application. Copiez-y le code suivant:
+[source, css]
+----
+/* Application-wide Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+h2, h3 {
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+body {
+  margin: 2em;
+}
+body, input[type="text"], button {
+  color: #888;
+  font-family: Cambria, Georgia, sans-serif;
+}
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+----
+
+Cette introduction est maintenant terminée, vous pouvez passer à l'étape suivante:
+link:2-hero-detail.html[Détails d'un héros]

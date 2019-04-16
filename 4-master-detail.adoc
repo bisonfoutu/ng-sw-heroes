@@ -1,0 +1,99 @@
+:source-highlighter: highlightjs
+:icons: font
+
+:iconfont-cdn: //use.fontawesome.com/releases/v5.4.2/css/all.css
+
+:toc: left
+:toclevels: 4
+
+:sectlinks:
+:sectanchors:
+:sectnums:
+
+= Composants Liste/Détail
+
+Pour le moment, le HeroesComponent est responsable de l'affichage à la fois de la liste et du détail du héros sélectionné.
+
+A mesure qu'une application grandit, le besoin de modularité grandit avec elle, et il ne devient évidemment plus viable de conserver toutes les fonctionnalités au sein d'un unique composant.
+Vous voudrez généralement séparer les composants complexes en plusieurs composants plus petits et plus simples, chacun étant centré sur une tâche particulière.
+
+Dans cette section vous allez faire votre premier pas dans cette direction en déplaçant les détails du héros dans un composant séparé et réutilisable, que l'on nommera `HeroDetailComponent`.
+
+Le `HeroesComponent` servira ainsi uniquement à afficher la liste des héros (comme son nom le laisserait supposer).
+
+== Créer le `HeroDetailComponent`
+
+Utilisez le CLI Angular pour générer un nouveau composant nommé `hero-detail`
+[source, bash]
+----
+ng g c hero-detail
+----
+
+Comme lors de la création du `HeroesComponent`, cette commande va générer le `HeroDetailComponent` dans son propre répertoire, `src/app/hero-detail`. On y retrouvera les 4 fichiers habituels:
+
+* hero-detail.component.html (template)
+* hero-detail.component.scss (styles)
+* hero-detail.component.spec.ts (tests)
+* hero-detail.component.ts (classe)
+
+La commande ajoute également le `HeroDetailComponent` dans le tableau des déclarations d' `AppModule`.
+
+TIP: Le CLI Angular accepte 2 formats pour la génération de composant: +
+`ng generate component hero-detail` +
+`ng generate component HeroDetail` +
+De manière générale, vous pouvez expérimenter les résultats des commandes du CLI sans affecter le projet grâce à l'option `--dry-run`
+
+== Ecrire le template
+
+Déplacez le HTML qui concerne le héros sélectionné depuis le `HeroesComponent` vers le `HeroDetailComponent`, en supprimant au passage le code boilerplate généré dans le template du `HeroDetailComponent`.
+
+Dans ce code HTML nous faisons référence au `selectedHero`. Ce nouveau composant peut présenter n'importe quel héros, renommez donc cet attribut en `hero` partout dans le template.
+
+== Ajouter l'attribut `@Input() hero`
+
+Le template du `HeroDetailComponent` est bindé à l'attribut `hero` qui est de type `Hero`.
+
+Nous allons déclarer cet attribut `hero` en tant qu'_Input_, car c'est de cette façon que le `HeroesComponent` pourra lui communiquer le héros à afficher.
+Pour ce faire, nous allons utiliser la syntaxe suivante:
+[source, javascript]
+----
+@Input() hero: Hero;
+----
+
+Et c'est tout ! Ce composant se contente de recevoir un héros et de l'afficher.
+
+== Afficher le `HeroDetailComponent`
+
+Le `HeroesComponent` va toujours se charger d'afficher la liste des héros et le détail du héros sélectionné, mais en délégant l'affichage de ce dernier au `HeroDetailComponent`.
+
+Ces deux composants vont alors avoir une relation de type parent/enfant. Le parent `HeroesComponent` va contrôler l'enfant `HeroDetailComponent` en lui envoyant un nouveau héros à afficher à chaque fois que l'utilisateur sélectionnera un héros dans la liste.
+
+Dans ce cadre, vous n'aurez aucune modification à faire dans la classe du `HeroesComponent`, tout va se passer dans le template HTML.
+
+=== Mise à jour du template du `HeroesComponent`
+
+Le sélecteur du `HeroDetailComponent` est `'sw-hero-detail'`. Ajoutez donc un élément `<sw-hero-detail>` en bas du template du `HeroesComponent`, là où le détail était précédemment situé.
+
+Il ne reste plus qu'à binder l'attribut `selectedHero` du `HeroesComponent` à l'attribut `hero` du `HeroDetailComponent`. Procédez ainsi:
+[source, html]
+----
+<sw-hero-detail [hero]="selectedHero"></sw-hero-detail>
+----
+
+`[hero]="selectedHero"` est ce qu'on appelle dans Angular un "property binding".
+
+C'est un binding à sens unique (là où `[(ngModel)]` est un binding à double sens), depuis l'attribut `selectedHero` du `HeroesComponent` vers l'attribut `hero` du `HeroDetailComponent`.
+
+Désormais, lorsque l'utilisateur sélectionne un héros, cela met à jour le `selectedHero`, qui à son tour met à jour la valeur de `hero`, et le `HeroDetailComponent` affiche le nouveau héros.
+
+== Qu'est-ce qui a changé ?
+
+L'expérience utilisateur n'a pas changé d'un poil après ces modifications.
+Ce refactoring a pourtant plusieurs bénéfices:
+1. Vous avez simplifié le `HeroesComponent` en réduisant ses responsabilités
+2. Vous pouvez faire évoluer le `HeroDetailComponent` en un éditeur de héros plus complet sans devoir modifier le `HeroesComponent`
+3. Vous pouvez faire évoluer le `HeroesComponent` sans toucher au template du détail
+4. Vous pouvez réutiliser le `HeroDetailComponent` dans le template de futurs composants.
+
+Cette section est maintenant terminée, vous pouvez passer à l'étape suivante:
+link:5-services.html[Services]
