@@ -91,7 +91,7 @@ constructor(private myService: MyService) { }
 
 Le paramètre définit un attribut privé `heroService` et l'identifie simultanément comme point d'injection du `HeroService`.
 
-Quand Angualr crée le `HeroesComponent`, le système d'injection de dépendance affecte l'attribut `heroService` à l'instance singleton du `HeroService`.
+Quand Angular crée le `HeroesComponent`, le système d'injection de dépendance affecte l'attribut `heroService` à l'instance singleton du `HeroService`.
 
 === Ajouter _getHeroes()_
 
