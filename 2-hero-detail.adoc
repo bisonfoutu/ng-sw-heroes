@@ -68,7 +68,14 @@ export interface Hero {
 
 Revenez au `HeroesComponent` et importez l'interface `Hero`.
 
-Changez le type de l'attribut `hero` en `Hero`. Initialisez-le avec un l'id `1` et le nom `Jar Jar Binks`.
+Changez le type de l'attribut `hero` en `Hero`. Initialisez-le avec un l'id `1` et le nom `Jar Jar Binks`. Exemple:
+[source, javascript]
+----
+myAttribute: MyModel = {
+  prop1: value1,
+  prop2: value2
+};
+----
 
 La page n'affiche plus le héros, c'est normal puisque `hero` n'est plus une string mais un objet.
 
