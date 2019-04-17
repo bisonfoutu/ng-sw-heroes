@@ -832,11 +832,23 @@ Angular n&#8217;accepte les bindings dans les templates que sur des attributs de
 <h2 id="_ajout_du_binding_au_messageservice"><a class="anchor" href="#_ajout_du_binding_au_messageservice"></a><a class="link" href="#_ajout_du_binding_au_messageservice">6. Ajout du binding au <em>MessageService</em></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Dans le template du <code>MessagesComponent</code>, ajoutez les éléments suivants:
-1. Un titre 'Messages' dans un <code>&lt;h2&gt;</code>.
-2. Un bouton de classe <code>clear</code>, affichant le texte <code>clear</code>, et qui au clic exécute la méthode <code>messageService.clear()</code>.
-3. Une liste de div affichant les messages du <code>messageService</code> via la directive <code>ngFor</code>.
-4. Pour éviter des erreurs au démarrage de l&#8217;application, encapsulez ces éléments dans un <code>&lt;ng-template&gt;</code> disposant d&#8217;une directive <code>ngIf</code> qui affiche le contenu seulement si la longueur du tableau <code>messages</code> du <code>messageService</code> est positive.</p>
+<p>Dans le template du <code>MessagesComponent</code>, ajoutez les éléments suivants:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Un titre 'Messages' dans un <code>&lt;h2&gt;</code>.</p>
+</li>
+<li>
+<p>Un bouton de classe <code>clear</code>, affichant le texte <code>clear</code>, et qui au clic exécute la méthode <code>messageService.clear()</code>.</p>
+</li>
+<li>
+<p>Une liste de div affichant les messages du <code>messageService</code> via la directive <code>ngFor</code>.</p>
+</li>
+<li>
+<p>Pour éviter des erreurs au démarrage de l&#8217;application, encapsulez ces éléments dans un <code>&lt;ng-container&gt;</code> disposant d&#8217;une directive <code>ngIf</code> qui affiche le contenu seulement si la longueur du tableau <code>messages</code> du <code>messageService</code> est positive.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>Il ne reste qu&#8217;à ajouter un peu de CSS sur le composant (dans <code>messages.component.scss)</code> pour rendre tout ça un peu plus sexy :)</p>
@@ -892,7 +904,7 @@ button.clear {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-17 13:48:59 +0200
+Last updated 2019-04-17 14:41:04 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -225,10 +225,11 @@ WARNING: Angular n'accepte les bindings dans les templates que sur des attributs
 == Ajout du binding au _MessageService_
 
 Dans le template du `MessagesComponent`, ajoutez les éléments suivants:
+
 1. Un titre 'Messages' dans un `<h2>`.
 2. Un bouton de classe `clear`, affichant le texte `clear`, et qui au clic exécute la méthode `messageService.clear()`.
 3. Une liste de div affichant les messages du `messageService` via la directive `ngFor`.
-4. Pour éviter des erreurs au démarrage de l'application, encapsulez ces éléments dans un `<ng-template>` disposant d'une directive `ngIf` qui affiche le contenu seulement si la longueur du tableau `messages` du `messageService` est positive.
+4. Pour éviter des erreurs au démarrage de l'application, encapsulez ces éléments dans un `<ng-container>` disposant d'une directive `ngIf` qui affiche le contenu seulement si la longueur du tableau `messages` du `messageService` est positive.
 
 Il ne reste qu'à ajouter un peu de CSS sur le composant (dans `messages.component.scss)` pour rendre tout ça un peu plus sexy :)
 [source, css]
