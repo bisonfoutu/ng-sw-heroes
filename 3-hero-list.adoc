@@ -46,7 +46,7 @@ Ouvrez la classe du `HeroesComponent` et importez le mock `HEROES`.
 import { HEROES } from '../mock-heroes';
 ----
 
-Dans le même fichier (`HeroesComponent`), définissez un attribut nommé `heroes`, prenant pour valeurs le mock HEROES précédemment importé, pour pouvoir ensuite le binder dans le template.
+Dans le même fichier (`HeroesComponent`), définissez un attribut nommé `heroes` typé en tableau de `Hero`, prenant pour valeurs le mock HEROES précédemment importé, pour pouvoir ensuite le binder dans le template.
 
 === Lister les héroes avec _*ngFor_
 
