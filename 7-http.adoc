@@ -128,7 +128,7 @@ Modifiez la méthode pour qu'elle utilise `HttpClient`, selon la syntaxe suivant
 [source, javascript]
 ----
 myMethod(): Observable<MyReturnType> {
-  this.http.get<MyReturnType>(this.myUrl);
+  return this.http.get<MyReturnType>(this.myUrl);
 }
 ----
 
