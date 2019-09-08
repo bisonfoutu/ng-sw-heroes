@@ -1,0 +1,26 @@
+{
+  "name": "ng-sw-heroes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate-html": "node convert-files.js"
+  },
+  "devDependencies": {
+    "asciidoctor": "^2.0.3",
+    "pre-commit": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bisonfoutu/ng-sw-heroes.git"
+  },
+  "author": {
+    "name": "François Poiré",
+    "email": "francois.poire+github@gmail.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bisonfoutu/ng-sw-heroes/issues"
+  },
+  "homepage": "https://github.com/bisonfoutu/ng-sw-heroes#readme"
+}

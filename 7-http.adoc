@@ -12,7 +12,7 @@
 
 = HTTP
 
-Dans cette section, vous allez ajouter les fonctionnalités de persistence de donnéess suivantes à l'aide du `HttpClient` d'Angular.
+Dans cette section, vous allez ajouter les fonctionnalités de persistence de données suivantes à l'aide du `HttpClient` d'Angular.
 
 * Le `HeroService` va récupérer les données de héros via des requêtes HTTP.
 * Les utilisateurs pourront ajouter, modifier et supprimer des héros, et sauvegarder ces changements via HTTP.
@@ -31,7 +31,8 @@ Pour rendre `HttpClient` disponible partout dans l'application:
 
 Ce tutoriel simule la communication avec un serveur distant en utilisant le module _In-memory Web API_.
 
-Après avoir installé le module, l'application émettra des requêtes et recevra des réponses via le `HttpClient` sans savoir que l'_In-memory Web API_ intercepte ces requêtes, les appliquant à un store de données en mémoire, et retournant des réponses simulées.
+Après avoir installé le module, l'application émettra des requêtes et recevra des réponses via le `HttpClient` sans savoir que l'_In-memory Web API_ intercepte ces requêtes,
+les appliquant à un store de données en mémoire, et retournant des réponses simulées.
 
 Cela vous permettra de manipuler `HttpClient` et d'en comprendre les mécanismes sans devoir monter un serveur d'API.
 
@@ -148,15 +149,18 @@ Cet appel particulier à `HttpClient.get` retourne un `Observable<Hero[]>`, litt
 
 === _HttpClient.get_ retourne les données de la réponse
 
-`HttpClient.get` retourn le _body_ de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, `<Hero[]>`, vous obtenez un résultat sous forme d'objet typé.
+`HttpClient.get` retourne le _body_ de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, `<Hero[]>`, vous obtenez un résultat sous forme d'objet typé.
 
 La forme des données JSON est déterminée par l'API du serveur distant. L'API de ce tutoriel retourne les données des héros comme un tableau.
 
-TIP: D'autres APIs peuvent enfouir les données dont vous avez besoin dans un objet. Vous pourriez devoir "faire remonter" ces données en passant le résultat `Observable` à travers l'opérateur map de RxJS. Vous vous en servirez un peu plus loin dans le tutoriel.
+TIP: D'autres APIs peuvent enfouir les données dont vous avez besoin dans un objet.
+Vous pourriez devoir "faire remonter" ces données en passant le résultat `Observable` à travers l'opérateur map de RxJS.
+Vous vous en servirez un peu plus loin dans le tutoriel.
 
 === Gestion d'erreurs
 
-Les choses ne se passent jamais comme prévu, surtout quand vous récupérez des données d'un serveur distant. La méthode `HeroService.getHeroes()` devrait catcher les erreurs et en faire quelque chose d'approprié.
+Les choses ne se passent jamais comme prévu, surtout quand vous récupérez des données d'un serveur distant.
+La méthode `HeroService.getHeroes()` devrait catcher les erreurs et en faire quelque chose d'approprié.
 
 Pour catcher les erreurs, vous allez utiliser la méthode "_pipe_" sur l'observable retourne par `http.get()`, accompagnée de l'opérateur RxJS `catchError()`.
 
@@ -176,14 +180,16 @@ L'opérateur `catchError()` intercepte un `Observable` qui a échoué. Il passe 
 La méthode `handleError()` suivante reporte l'erreur et renvoie ensuite un résultat inoffensif pour que l'application continue à fonctionner.
 
 NOTE: La méthode `pipe()` de RxJS peut s'appliquer sur tout `Observable`, en tout point de l'application, que ce soit dans un service, un composant ou dans tout autre composant Angular. +
-Elle peut exécuter plusieurs opérateurs RxJS à la suite, il suffit pour cela de les séparer par des virgules. On les écrit généralement sur des lignes séparées. Ils sont ensuite exécutés dans l'ordre d'écriture, du haut vers le bas. +
+Elle peut exécuter plusieurs opérateurs RxJS à la suite, il suffit pour cela de les séparer par des virgules.
+On les écrit généralement sur des lignes séparées. Ils sont ensuite exécutés dans l'ordre d'écriture, du haut vers le bas. +
 Cela permet d'enchaîner plusieurs opérations sur un Observable, chaque pipe prenant en paramètre la valeur de retour du pipe précédent.
 
 ==== handleError
 
 La méthode `handleError()` suivante va être partagée par de nombreuses méthodes de `HeroService`, elle est donc générique de manière à remplir leurs différents besoins.
 
-Plutôt que de traiter l'erreur directement, elle retourne une fonction de gestion d'erreur à `catchError` qu'elle a préalablement configurée avec le nom de l'opération qui a échoué et une valeur de retour inoffensive:
+Plutôt que de traiter l'erreur directement, elle retourne une fonction de gestion d'erreur à `catchError` qu'elle a préalablement configurée
+avec le nom de l'opération qui a échoué et une valeur de retour inoffensive:
 
 [source, javascript]
 ----
@@ -204,13 +210,14 @@ private handleError<T> (operation = 'operation', result?: T) {
 
 Après avoir reporté l'erreur dans la console, le handler construit un message plus "user-friendly" et retourne une valeur inoffensive pour que l'application continue à fonctionner.
 
-Parce que chaque méthode du service retourne un type d' `Observable` différent, `handleError()` prend un paramètre de type pour qu'elle puisse retourne une valeur inoffensive du type attendu par l'application.
+Parce que chaque méthode du service retourne un type d' `Observable` différent, `handleError()` prend un paramètre le type pour qu'elle puisse retourne une valeur inoffensive du type attendu par l'application.
 
 === Faire un _tap_ dans l'_Observable_
 
 Les méthodes du `HeroService` vont _tap_ dans le flux de valeurs observables et renvoyer un message (via `log()` dans la zone de messages en bas de la page).
 
-Elles vont pour ce faire utiliser l'opérateur `tap` de RxJS, qui _regarde_ les valeurs observables, fait _quelque chose_ avec, et les renvoie telles qu'il les a reçues. `tap` ne touche pas les valeurs en elles-mêmes.
+Elles vont pour ce faire utiliser l'opérateur `tap` de RxJS, qui _regarde_ les valeurs observables, fait _quelque chose_ avec, et les renvoie telles qu'il les a reçues.
+`tap` ne touche pas les valeurs en elles-mêmes.
 
 Ajoutez un opérateur `tap` au-dessus de `catchError`, et appelez-y la méthode `log()` avec le message "fetched heroes" en paramètre.
 
@@ -221,6 +228,7 @@ La majorité des APIs proposent une requête de _get by id_ sous la forme `:base
 Ici, la _base URL_ est `heroesURL` que nous avons défini plus tôt dans le tutoriel (`api/heroes`), et _id_ est le numéro du héros que vous souhaitez retrouver. Par exemple, `api/heroes/13`.
 
 Modifiez la méthode `getHero()` du service selon les règles suivantes:
+
 1. Créez une constante `url` qui respecte le chemin évoqué plus haut, à partir de l'attribut `heroesUrl` et du paramètre `id`.
 2. Remplacez le retour mocké via `of()` par un appel à `http.get` sur l'url que vous venez d'écrire, et typez-le pour respecter la signature `getHero()`.
 3. Dans un opérateur `tap`, appelez `log()` de manière à afficher le message suivant (pour l'id 13): "fetched hero id=13".
@@ -228,15 +236,17 @@ Modifiez la méthode `getHero()` du service selon les règles suivantes:
 
 == Mettre à jour les héros
 
-Modifiez le nom d'un héros dans la vue détail. Lorsque vous tapez, le nom du héros se met à jour dans le titre en haut de la page. Mais quand vous cliquez sur le bouton "go back", les changements sont perdus.
+Modifiez le nom d'un héros dans la vue détail. Lorsque vous tapez, le nom du héros se met à jour dans le titre en haut de la page.
+Mais quand vous cliquez sur le bouton "go back", les changements sont perdus.
 
 Si vous voulez persister les changements, vous devez les envoyer au serveur.
 
 A la fin du template du détail de héros, ajoutez un bouton intitulé "save" et bindez son clic sur une nouvelle méthode `save()`.
 
 Dans la classe du composant, implémentez la méthode `save()` selon ces règles:
+
 1. Appelez la méthode (pas encore implémentée) `heroService.updateHero()`, en lui passant l'attribut `hero` du composant en paramètre.
-2. Effecturez un subscribe sur `updateHero()`, et appelez-y la méthode `goBack()`.
+2. Effectuez un subscribe sur `updateHero()`, et appelez-y la méthode `goBack()`.
 
 ==== Ajouter _HeroService.updateHero()_
 
@@ -252,6 +262,7 @@ updateHero (hero: Hero): Observable<any> {
 ----
 
 La méthode `HttpClient.put()` prend 3 paramètres:
+
 * l'URL
 * les données à mettre à jour (le héros modifié dans notre cas)
 * des options
@@ -266,7 +277,8 @@ const httpOptions = {
 };
 ----
 
-Une fois le navigateur rafraîchi, modifiez le nom d'un héros et sauvegardez. Vous devriez automatiquement revenir à la liste (ou au dashboard, selon la page précédente), et constater que la modification a été conservée.
+Une fois le navigateur rafraîchi, modifiez le nom d'un héros et sauvegardez.
+Vous devriez automatiquement revenir à la liste (ou au dashboard, selon la page précédente), et constater que la modification a été conservée.
 
 == Ajouter un nouveau héros
 
@@ -308,9 +320,10 @@ Il ne reste donc plus qu'à implémenter `addHero()` dans le `HeroService`.
 ==== Ajouter _HeroService.addHero()_
 
 Implémentez la méthode `addHero()` selon les consignes suivantes:
+
 1. La méthode prend en paramètre un `Hero` et retourne un `Observable<Hero>`.
 2. La méthode retourne le résultat de la méthode `http.post()`, qui prend les 3 mêmes paramètres que `http.put().
-3. En cas de succès, `tap` logge le message "added hero w/ id=${newHero.id}", newHero étant le paramètre de `tap`.
+3. En cas de succès, `tap` logue le message "added hero w/ id=${newHero.id}", newHero étant le paramètre de `tap`.
 4. En cas d'échec, `catchError` appelle `handleError` avec le message 'addHero'.
 
 == Supprimer un héros
@@ -329,7 +342,8 @@ delete(hero: Hero): void {
 }
 ----
 
-Même si le composant délègue la suppression du héros au `HeroService`, il reste responsable de la mise à jour de sa propre liste de héros. La méthode `delete()` du composant supprime immédiatement le "héros à supprimer" de la liste, anticipant ainsi que l'appel du `HeroService` sur le serveur sera un succès.
+Même si le composant délègue la suppression du héros au `HeroService`, il reste responsable de la mise à jour de sa propre liste de héros.
+La méthode `delete()` du composant supprime immédiatement le "héros à supprimer" de la liste, anticipant ainsi que l'appel du `HeroService` sur le serveur sera un succès.
 
 Le composant n'a vraiment rien à faire avec l' `Observable` retourné par `heroService.delete()`, mais il doit tout de même y subscribe.
 
@@ -363,7 +377,9 @@ Notez que:
 
 Dans ce dernier exercice, vous allez apprendre à chaîner les opérateurs d' `Observable` pour minimiser le nombre d'appels HTTP similaires et consommer la bande passante de manière économique.
 
-Vous allez ajouter une feature de recherche de héros sur le dashboard. Quand l'utilisateur va taper un nom dans le champ de recherche, vous ferez des récupérerez au fur et à mesure les héros correspondant à ce nom. Votre but est d'émettre juste le nombre nécessaires de requêtes HTTP.
+Vous allez ajouter une feature de recherche de héros sur le dashboard.
+Quand l'utilisateur va taper un nom dans le champ de recherche, vous ferez des récupérerez au fur et à mesure les héros correspondant à ce nom.
+Votre but est d'émettre juste le nombre nécessaire de requêtes HTTP.
 
 ==== _HeroService.searchHeroes_
 
@@ -378,20 +394,23 @@ searchHeroes(term: string): Observable<Hero[]> {
   }
   const params = new HttpParams()
     .set('name', term);
-  return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
-    tap(_ => this.log(`found heroes matching "${term}"`), {params}),
+  return this.http.get<Hero[]>(`${this.heroesUrl}`, {params}).pipe(
+    tap(_ => this.log(`found heroes matching "${term}"`)),
     catchError(this.handleError<Hero[]>('searchHeroes', []))
   );
 }
 ----
 
-La méthode retourne immédiatement un tableau vide le champ de recherche est vide. Le reste ressemble à `getHeroes()`. La seule différence significative est la constante params qui set un paramètre `name` avec la valeur de `term`.
+La méthode retourne immédiatement un tableau vide si le champ de recherche est vide. Le reste ressemble à `getHeroes()`.
+La seule différence significative est la constante params qui set un paramètre `name` avec la valeur de `term`.
 
-NOTE: Vous auriez également pu passer ce paramètre directement dans l'URL (\``${this.heroesUrl}/?name=${term}``), mais cette méthode est moins lisible à mesure que les paramètres se multiplient, et elle atteindra rapidement ses limites dans le cas où des paramètres seraient optionnels, ce qui aurait pour effet d'envoyer des paramètres sans valeur, et qui n'est pas très propre.
+NOTE: Vous auriez également pu passer ce paramètre directement dans l'URL (\``${this.heroesUrl}/?name=${term}``),
+mais cette méthode est moins lisible à mesure que les paramètres se multiplient, et elle atteindra rapidement ses limites dans le cas où des paramètres seraient optionnels,
+ce qui aurait pour effet d'envoyer des paramètres sans valeur, et qui n'est pas très propre.
 
 === Ajouter la recherche au dashboard
 
-Ouvrez le tempalte du `DashboardComponent` et ajoutez un nouvel élément `<sw-hero-search>` en bas du template.
+Ouvrez le template du `DashboardComponent` et ajoutez un nouvel élément `<sw-hero-search>` en bas du template.
 
 Comme on pourrait s'y attendre, cet ajout va casser l'application, puisque vous n'avez pas encore créé le `HeroSearchComponent`.
 
@@ -486,7 +505,8 @@ Nous devons maintenant implémenter les différents éléments de la classe du c
 2. Créez un attribut privé `searchTerms`, et assignez-lui la valeur `new Subject<string>();`. Nous reviendrons juste après sur la notion de `Subject`.
 3. Créez une méthode `search()`, qui prend en paramètre un `term` de type string, et qui exécute l'instruction suivante: `this.searchTerms.next(term);`
 4. Dans `ngOnInit()`, affectez à l'attribut `heroes$` l'attribut `this.searchTerms`.
-5. Ajoutez un pipe sur `this.searchTerms` dans l'instruction que vous venez d'écrire, et ajoutez-y successivement les opérateurs `debounceTime(300)`, `distinctUntilChanged()`, et `switchMap((term: string) => this.heroService.searchHeroes(term))`.
+5. Ajoutez un pipe sur `this.searchTerms` dans l'instruction que vous venez d'écrire, et ajoutez-y successivement les opérateurs
+`debounceTime(300)`, `distinctUntilChanged()`, et `switchMap\((term: string) => this.heroService.searchHeroes(term))`.
 
 === Le Subject RxJS _searchTerms_
 
@@ -498,13 +518,16 @@ Vous pouvez également pousser des valeurs dans cet `Observable` en appelant sa 
 
 La méthode `search()` est appelée via un binding sur l'évènement `input` du champ de recherche.
 
-A chaque fois que l'utilisateur tape dans le champ, le binding appelle `search()` avec la valeur du champ, le "terme de recherche". L'attribut `searchTerms` devient un `Observable` qui émet un flux régulier de termes de recherche.
+A chaque fois que l'utilisateur tape dans le champ, le binding appelle `search()` avec la valeur du champ,
+le "terme de recherche". L'attribut `searchTerms` devient un `Observable` qui émet un flux régulier de termes de recherche.
 
 === Chaîner les opérateurs RxJS
 
-Passer un nouveau terme de recherche directement à `searchHeroes()` après chaque appui sur une touche créerait un nombre excessif de requêtes HTTP, ce qui utiliserait inutilement les ressources du serveur et consommerait inutilement de la bande passante.
+Passer un nouveau terme de recherche directement à `searchHeroes()` après chaque appui sur une touche créerait un nombre excessif de requêtes HTTP,
+ce qui utiliserait inutilement les ressources du serveur et consommerait inutilement de la bande passante.
 
-A la place, la méthode `ngOnInit()` pipe les observables de `searchTerms` à travers une séquence d'opérateurs RxJS qui réduit le nombre d'appels à `searchHeroes()`, ne renvoyant finalement qu'un observable de résultats de héros bien timé.
+A la place, la méthode `ngOnInit()` pipe les observables de `searchTerms` à travers une séquence d'opérateurs RxJS qui réduit le nombre d'appels à `searchHeroes()`,
+ne renvoyant finalement qu'un observable de résultats de héros bien timé.
 
 Cette séquence devrait ressembler à ceci:
 [source, javascript]
@@ -516,11 +539,14 @@ this.heroes$ = this.searchTerms.pipe(
 );
 ----
 
-* `debounceTime(300)` attend que l'utilisateur arrête de taper dans le champ de rechercher pendant 300ms avant de laisser passer la dernière string. Vous ne ferez donc jamais d'appels plus fréquemment que toutes les 300ms.
+* `debounceTime(300)` attend que l'utilisateur arrête de taper dans le champ de rechercher pendant 300ms avant de laisser passer la dernière string.
+Vous ne ferez donc jamais d'appels plus fréquemment que toutes les 300ms.
 * `distinctUntilChanged()` s'assure que la requête n'est envoyée que si le texte du champ a changé.
-* `switchMap()` appelle le service de recherche pour chaque terme de recherche qui est passe à travers `debounce` et `distinctUntilChanged`. Il annule les observables des recherches précédentes, retournant uniquement le dernier observable du service de recherche.
+* `switchMap()` appelle le service de recherche pour chaque terme de recherche qui est passe à travers `debounce` et `distinctUntilChanged`.
+Il annule les observables des recherches précédentes, retournant uniquement le dernier observable du service de recherche.
 
-NOTE: Avec l'opérateur `switchMap`, chaque clé qui a passé `debounce` et `distinctUntilChanged` peut déclencher un appel à `HttpClient.get()`. Même avec une pause de 300ms entre les requêtes, vous pourriez avoir plusieurs requêtes HTTP en cours et elles pourraient ne pas répondre dans l'ordre où elles ont été envoyées. +
+NOTE: Avec l'opérateur `switchMap`, chaque clé qui a passé `debounce` et `distinctUntilChanged` peut déclencher un appel à `HttpClient.get()`.
+Même avec une pause de 300ms entre les requêtes, vous pourriez avoir plusieurs requêtes HTTP en cours et elles pourraient ne pas répondre dans l'ordre où elles ont été envoyées. +
 `switchMap` préserve l'ordre original des requêtes en ne renvoyant que l'observable de l'appel HTTP le plus récent. Les résultats des appels précédents sont annulés. +
 Notez qu`annuler` un précédent _Observable_ de `searchHeroes()` ne met pas fin à la requête HTTP concernée. Les résulats sont simplement ignorés avant d'atteindre le code de l'application.
 
@@ -531,6 +557,7 @@ Une fois le navigateur rafraîchi, vous devriez pouvoir tester la recherche.
 Et voilà, c'est terminé !
 
 Voici un résumé de ce que vous avez accompli dans cette section:
+
 * Vous avez ajouté les dépendances nécessaires pour utiliser HTTP dans l'application.
 * Vous avez refactoré `HeroService` pour charger les héros depuis une API.
 * Vous avez étendu `HeroService` pour supporter les méthodes `post()`, `put()` et `delete()`.

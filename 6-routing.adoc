@@ -15,7 +15,7 @@
 Nous souhaitons ajouter de nouvelles fonctionnalités à notre application:
 
 * Ajouter une vue _Dashboard_
-* Ajouter la possiblité de naviguer entre les vues _Heroes_ et _Dashboard_
+* Ajouter la possibilité de naviguer entre les vues _Heroes_ et _Dashboard_
 * Quand un utilisateur clique sur le nom d'un héros dans l'une des vues, naviguer vers le héros sélectionné
 * Quand un utilisateur clique sur un _deep link_ dans un email, ouvrir la vue détail de ce héros
 
@@ -31,8 +31,10 @@ ng generate module app-routing --flat --module=app
 NOTE: `--flat` ajoute le fichier directement dans `src/app` plutôt que dans son propre répertoire. +
 `--module=app` indique au CLI de l'ajouter dans le tableau d' `imports` de l'AppModule.
 
-Vous ne déclarerez généralement jamais de composant dans un module de routing, vous pouvez donc supprimer `declarations` dans les metadata. Nous n'utiliserons pas non plus le CommonModule, vous pouvez donc le supprimer du tableau des metadata et retirer sa ligne d'import.
-Ajoutez maintenant un tableau `exports` en-dessous d' `imports` dans les metadata, et ajoutez-y `RouterModule`.
+Vous ne déclarerez généralement jamais de composant dans un module de routing, vous pouvez donc supprimer `declarations` dans les metadata. +
+Nous n'utiliserons pas non plus le CommonModule, vous pouvez donc le supprimer du tableau des metadata et retirer sa ligne d'import. +
+
+Ajoutez maintenant un tableau `exports` en-dessous d' `imports` dans les metadata, et ajoutez-y `RouterModule`. +
 C'est cet export qui nous permettra de rendre les routes disponibles pour êtres utilisées dans les composants d' `AppModule` qui en auront besoin.
 
 === Ajouter des routes
@@ -40,6 +42,7 @@ C'est cet export qui nous permettra de rendre les routes disponibles pour êtres
 Les _Routes_ permettent au router de savoir quelle vue afficher quand un utilisateur clique sur un lien ou colle une URL dans la barre d'adresse du navigateur.
 
 Une route Angular classique a deux propriétés:
+
 1. `path`: une string qui matche l'URL du navigateur.
 2. `component`: le composant que le router devrait créer quand il navigue vers cette route.
 
@@ -63,7 +66,8 @@ Ajoutez `RouterModule` aux `imports` dans les metadata, et configurez-le comme s
 imports: [ RouterModule.forRoot(routes) ],
 ----
 
-TIP: La méthode s'appelle `forRoot` parce que vous configurez le router au niveau racine de l'application. La méthode `forRoot()` fournit les providers de service et les directives nécessaires pour le routing, et accomplit la navigation initiale en fonction de l'URL courante du navigateur.
+TIP: La méthode s'appelle `forRoot` parce que vous configurez le router au niveau racine de l'application.
+La méthode `forRoot()` fournit les providers de service et les directives nécessaires pour le routing, et accomplit la navigation initiale en fonction de l'URL courante du navigateur.
 
 == Ajouter RouterOutlet
 
@@ -75,7 +79,7 @@ Le `<router-outlet>` indique au router où afficher les vues liées au routing.
 
 NOTE: Le `RouterOutlet` est une des directives du router qui ont été rendues disponibles dans `AppComponent` parce que `AppModule` importe `AppRoutingModule` qui exporte `RouterModule`.
 
-==== Essayez-le
+==== Testez-le
 
 Le navigateur devrait se rafraîchir et l'application devrait toujours s'afficher, mais pas la liste des héros.
 
@@ -95,7 +99,9 @@ Dans le template d' `AppComponent`, ajoutez un élément `<nav>` juste sous le t
 </nav>
 ----
 
-Un attribut `routerLink` est assigné avec la valeur `heroes`, la string que le router va matcher avec la route vers le `HeroesComponent`. Le `routerLink` est le sélecteur de la directive `RouterLink` qui lie les clics de l'utilisateur à la navigation. C'est une autre des directives publiques du `RouterModule`.
+Un attribut `routerLink` est assigné avec la valeur `heroes`, la string que le router va matcher avec la route vers le `HeroesComponent`.
+
+Le `routerLink` est le sélecteur de la directive `RouterLink` qui lie les clics de l'utilisateur à la navigation. C'est une autre des directives publiques du `RouterModule`.
 
 Au rafraîchissement du navigateur, vous devriez désormais pouvoir cliquer sur le lien pour afficher la liste des héros.
 
@@ -148,11 +154,25 @@ Nous allons commencer par implémenter les méthodes du dashboard.
 
 === Le template du dashboard
 
-1. Ajouter un titre `<h3>` affichant "Top Heroes"
-2. Ajouter une `<div>` de classes `grid grid-pad`
-3. Dans cette `<div>`, ajouter un élément `<a>` de classe `col-1-4`, et y appliquer un `ngFor` sur l'attribut `heroes`
-4. Dans `<a>`, ajouter une div de classes `module hero`
-5. Dans cette `<div>`, ajouter un titre `<h4>` affichant le nom du héros courant du `ngFor`
+
+Copiez le code suivant dans le template du `DashboardComponent`:
+[source, html]
+----
+<h3>Top Heroes</h3>
+
+<div class="grid grid-pad">
+  <a class="col-1-4">
+    <div class="module hero">
+      <h4><!-- hero name --></h4>
+    </div>
+  </a>
+</div>
+----
+
+Mettez à jour ce code pour ajouter:
+
+1. Sur `<a>`, un `*ngFor` sur l'attribut `heroes`
+2. Dans `<h4>`, le nom du héros courant du `*ngFor`
 
 === Et pour finir, "un peu" de CSS
 
@@ -236,7 +256,7 @@ La _classe_ est similaire à celle du `HeroesComponent`.
 * Le constructeur injecte le `HeroService` dans un attribut privé `heroService`.
 * Le hook `ngOnInit()` appelle `getHeroes`.
 
-La méthode `getHeroes` retourne la liste des héros tronquée, des positions 1 à 5, soit seulement 4 "Top Heroes" (les 2ème, 3ème, 4ème et 5ème).
+La méthode `getHeroes` retourne la liste des héros tronquée des positions 1 à 5, soit seulement 4 "Top Heroes" (les 2ème, 3ème, 4ème et 5ème).
 
 === Ajouter la route du dashboard
 
@@ -246,7 +266,8 @@ Ajoutez une route dans les `routes` d' `AppRoutingModule`, qui lie le path `dash
 
 === Ajouter une route par défaut
 
-Quand l'application démarre, le navigateur pointe vers la racine de l'application. Ca ne matche aucune des routes définies, donc le navigateur ne navigue nulle part. L'espace dans `<router-outlet>` est donc vide.
+Quand l'application démarre, le navigateur pointe vers la racine de l'application.
+Ca ne matche aucune des routes définies, donc le navigateur ne navigue nulle part. L'espace dans `<router-outlet>` est donc vide.
 
 Pour que l'application navigue automatiquement vers le dashboard, ajoutez la route suivante dans les `routes` d' `AppRoutingModule`:
 [source, javascript]
@@ -269,6 +290,7 @@ Ajoutez un lien vers le dashboard dans `AppComponent`, sobrement intitulé "Dash
 Le `HeroDetailsComponent` affiche les détails du héros sélectionné. Pour l'instant, `HeroDetailsComponent` est seulement visible en bas du `HeroesComponent`.
 
 L'utilisateur devrait pouvoir voir ces détails de 3 façons:
+
 1. En cliquant sur un héros dans le dashboard.
 2. En cliquant sur un héros dans la liste des héros.
 3. En collant un "deep link" directement dans la barre d'adresse du navigateur, qui indique le héros à afficher.
@@ -277,7 +299,8 @@ Dans cette section, vous allez ajouter la navigation vers le `HeroDetailsCompone
 
 === Supprimer _hero details_ du `HeroesComponent`
 
-Quand l'utilisateur clique sur un héros dans le `HeroesComponent`, l'application devrait naviguer vers le `HeroDetailComponent`. La vue de la liste des héros ne devrait plus afficher les détails comme elle le fait maintenant.
+Quand l'utilisateur clique sur un héros dans le `HeroesComponent`, l'application devrait naviguer vers le `HeroDetailComponent`.
+La vue de la liste des héros ne devrait plus afficher les détails comme elle le fait maintenant.
 
 Ouvrez le template d' `HeroesComponent` et supprimez l'élément `<sw-hero-detail>`.
 
@@ -293,7 +316,7 @@ Les deux points (:) dans le `path` indiquent que `:id` est un placeholder pour u
 
 Pour l'instant, les liens vers les héros dans le `DashboardComponent` ne font rien.
 
-Maintenant que le router sait naviguer vers le `HeroDetailComponent`, vous pouvez ajouter un `routerLink` sur l'élément `<a>`.
+Maintenant que le router sait naviguer vers le `HeroDetailComponent`, vous pouvez ajouter un `routerLink` sur l'élément `<a>`. +
 N'oubliez pas que les doubles accolades d'interpolation sont également disponibles dans routerLink:
 [source, html]
 ----
@@ -365,7 +388,7 @@ Remplacez le CSS du `HeroesComponent` par celui-ci pour régler les soucis d'aff
 ==== Supprimer le code mort
 
 Si le `HeroesComponent` fonctionne toujours, la méthode `onSelect()` et l'attribut `selectedHero` ne sont plus utilisés.
-Nettoyer le code non utilisé d'une application est une bonne pratique, et vous vous remercierez plus tard !
+Nettoyer le code non utilisé d'une application est une bonne pratique, et vous vous remercierez plus tard ! +
 Supprimez donc ces deux éléments de la classe.
 
 == `HeroDetailComponent` routable
@@ -379,7 +402,7 @@ Vous allez donc devoir:
 * En extraire l' `id`.
 * Récupérer le héros correspondant via le `HeroService`.
 
-Injectez `ActivatedRoute`, `HeroService` et `Location` dans le constructeur du `HeroDetaiLComponent` dans 3 attributs privés.
+Injectez `ActivatedRoute`, `HeroService` et `Location` dans le constructeur du `HeroDetailComponent` dans 3 attributs privés.
 Nous ferons ici une exception pour le nommage de l'attribut qui va instancier `ActivatedRoute`, en le nommant simplement `route`.
 
 `ActivatedRoute` contient les informations de la route de cette instance du `HeroDetailComponent`. Nous serons intéressés par la partie qui contient les paramètres d'URL.
@@ -398,8 +421,8 @@ Définissez `getHero()` comme suit:
 2. Appelez la méthode `heroService.getHero(id)` que vous allez définir un peu plus tard.
 3. Effectuez un subscribe sur cette méthode du service, et dans ce subscribe assignez la valeur de retour `hero` à l'attribut `hero` du composant.
 
-`route.snapshot` est une image statique des informations de la route un peu après que le composant ait été créé.
-`paramMap` est un dictionnaire de paramètres de route extraits depuis l'URL. La clé `"id"` retourn l'id du héros à récupérer.
+`route.snapshot` est une image statique des informations de la route un peu après que le composant ait été créé. +
+`paramMap` est un dictionnaire de paramètres de route extraits depuis l'URL. La clé `"id"` retourne l'id du héros à récupérer. +
 Les paramètres de route sont toujours des strings. L'opérateur (+) convertit la string en nombre, ce qu'un id de héros devrait être.
 
 === Ajouter `HeroService.getHero()`
@@ -414,11 +437,13 @@ getHero(id: number): Observable<Hero> {
 }
 ----
 
-TIP: Notez les backquotes (`) qui définissent un _template literal_ JavaScript pour embarquer l'id. Cette syntaxe permet généralement d'éviter de concaténer plusieurs strings via l'opérateur (+) et ainsi de faciliter la lecture.
+TIP: Notez les backquotes (`) qui définissent un _template literal_ JavaScript pour embarquer l'id.
+Cette syntaxe permet généralement d'éviter de concaténer plusieurs strings via l'opérateur (+) et ainsi de faciliter la lecture.
 
-Comme `getHeroes()`, `getHero()` a une signature asynchrone, et renvoie un héros mocké dans un Observable. Cela vous permettra de ré-implémenter `getHero()` comme un vrai appel Http sans devoir changer le `HeroDetailComponent` qui l'appelle.
+Comme `getHeroes()`, `getHero()` a une signature asynchrone, et renvoie un héros mocké dans un Observable.
+Cela vous permettra de ré-implémenter `getHero()` comme un vrai appel Http sans devoir changer le `HeroDetailComponent` qui l'appelle.
 
-==== Essayez-le
+==== Testez-le
 
 Au rafraîchissement du navigateur, l'application devrait à nouveau fonctionner. Essayez d'accéder manuellement à l'URL `localhost:4200/detail/13` et vous devriez voir les détails de Chewbacca.
 
@@ -433,6 +458,11 @@ Ajoutez un bouton intitulé "go back" en bas du template du composant, et bindez
 Ajoutez ensuite cette méthode `goBack()` dans la classe du composant. Elle appelle la méthode `this.location.back();`.
 
 Et voilà pour le routing !
+
+TIP: L'utilisation de this.location.back est rarement utilisée dans les applications, parce qu'elle peut ne pas renvoyer systématiquement vers la même page. +
+Par exemple, si vous avez accédé au détail du héros depuis la liste, le bouton "go back" va vous ramener sur la liste. +
+En revanche, si vous avez ouvert l'application directement sur la page de détail, le bouton "go back" va vous renvoyer soit sur le site précédent, soit nulle part si votre historique d'onglet est vide. +
+On préférera donc utiliser `this.router.navigate()` pour rediriger explicitement l'utilisateur sur la route souhaitée.
 
 Cette section est maintenant terminée, vous pouvez passer à la dernière étape:
 link:7-http.html[HTTP]

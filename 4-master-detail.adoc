@@ -64,9 +64,10 @@ Et c'est tout ! Ce composant se contente de recevoir un héros et de l'afficher.
 
 == Afficher le `HeroDetailComponent`
 
-Le `HeroesComponent` va toujours se charger d'afficher la liste des héros et le détail du héros sélectionné, mais en délégant l'affichage de ce dernier au `HeroDetailComponent`.
+Le `HeroesComponent` va toujours se charger d'afficher la liste des héros et le détail du héros sélectionné, mais en déléguant l'affichage de ce dernier au `HeroDetailComponent`.
 
-Ces deux composants vont alors avoir une relation de type parent/enfant. Le parent `HeroesComponent` va contrôler l'enfant `HeroDetailComponent` en lui envoyant un nouveau héros à afficher à chaque fois que l'utilisateur sélectionnera un héros dans la liste.
+Ces deux composants vont alors avoir une relation de type parent/enfant.
+Le parent `HeroesComponent` va contrôler l'enfant `HeroDetailComponent` en lui envoyant un nouveau héros à afficher à chaque fois que l'utilisateur sélectionnera un héros dans la liste.
 
 Dans ce cadre, vous n'aurez aucune modification à faire dans la classe du `HeroesComponent`, tout va se passer dans le template HTML.
 
@@ -90,6 +91,7 @@ Désormais, lorsque l'utilisateur sélectionne un héros, cela met à jour le `s
 
 L'expérience utilisateur n'a pas changé d'un poil après ces modifications.
 Ce refactoring a pourtant plusieurs bénéfices:
+
 1. Vous avez simplifié le `HeroesComponent` en réduisant ses responsabilités
 2. Vous pouvez faire évoluer le `HeroDetailComponent` en un éditeur de héros plus complet sans devoir modifier le `HeroesComponent`
 3. Vous pouvez faire évoluer le `HeroesComponent` sans toucher au template du détail

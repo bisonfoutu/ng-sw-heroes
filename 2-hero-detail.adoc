@@ -30,7 +30,7 @@ Ouvrez la classe TypeScript du HeroesComponent.
 On peut distinguer plusieurs éléments dans ce fichier:
 
 * une ligne d'imports, qui importe dans le fichier les éléments Component et OnInit depuis la librairie core d'Angular.
-* une annotation `@Component` qui contient la définition du composant sous forme de métadonnées:
+* une annotation `@Component` qui contient la définition du composant sous forme de méta-données:
   1. `selector` - le tag html du composant.
   2. `templateUrl` - l'emplacement du template HTML du composant
   3. `styleUrls` - l'emplacement du fichiers de styles du composant
@@ -45,19 +45,23 @@ NOTE: Le sélecteur du composant permet à un composant parent de l'identifier e
 Ajoutez un attribut `hero` dans la classe du component HeroesComponent, prenant pour valeur `'Jar Jar Binks' `.
 
 === Afficher le héros
-Ouvrez le template HTML du composant, supprimez le contenu auto-généré, et remplacez-le par un data-binding du nouvel attribut `hero` (pour rappel, il s'agit de la syntaxe entre double accolades vue précédemment pour l'attribut title dans l'AppComponent).
+Ouvrez le template HTML du composant, supprimez le contenu auto-généré, et remplacez-le par un data-binding du nouvel attribut `hero`
+(pour rappel, il s'agit de la syntaxe entre double accolades vue précédemment pour l'attribut title dans l'AppComponent).
 
 == Afficher le HeroesComponent
 Pour afficher le HeroesComponent, vous devez l'ajouter au template de l'AppComponent.
 
-Rappelez-vous que `sw-heroes` est le sélecteur "élément" du HeroesComponent. Ajoutez donc un élément <sw-heroes> au template de l'AppComponent, juste sous le titre.
+Rappelez-vous que `sw-heroes` est le sélecteur "élément" du HeroesComponent. +
+Ajoutez donc un élément `<sw-heroes>` au template de l'AppComponent, juste sous le titre.
 
 Si la commande `ng serve` du CLI Angular est toujours en cours d'exécution, le navigateur devrait rafraîchir l'application et afficher à la fois le titre, et le nom du héros.
 
 == Créer un modèle Hero
 Un véritable héros est plus qu'un simple nom.
 
-Créez une interface `Hero` dans son propre fichier `hero.model.ts`, dans le répertoire `src/app/models`. Donnez-lui deux attributs, `id` et `name`.
+Créez une interface `Hero` dans son propre fichier `hero.model.ts`, dans le répertoire `src/app/models`. +
+Donnez-lui deux attributs, `id` et `name`.
+
 [source, javascript]
 ----
 export interface Hero {
@@ -87,11 +91,19 @@ Pour afficher un attribut d'un objet dans un binding, il convient d'utiliser la 
 {{ hero.id }}
 ----
 
+Copiez le code suivant dans le template du `HeroesComponent`:
+[source, html]
+----
+<h2><!-- title --> Details</h2>
+<div><span>id: </span><!-- id --></div>
+<div><span>name: </span><!-- name --></div>
+----
+
 Mettez à jour le binding dans le template pour afficher:
 
-*dans un `<h2>` le titre `Jar Jar Binks Details`
-*dans une `<div>`, un `<span>` contenant _id:_, suivi de l'id du héros
-*dans une seconde `<div>`, un `<span>` contenant _name:_, suivi du nom du héros
+* le titre `Jar Jar Binks Details`
+* l'id du héros
+* le nom du héros
 
 Le navigateur devrait alors se rafraîchir et afficher les informations du héros.
 
@@ -106,13 +118,15 @@ Pour appliquer un pipe dans un binding, il faut utiliser la syntaxe suivante:
 ----
 Modifiez le binding dans le titre du composant pour afficher le nom du héros en majuscules.
 
-Plusieurs pipes sont disponibles par défaut dans Angular, et permettent de formatter des chaînes de caractères, des montants d'argent, des dates... Et bien entendu, vous pouvez également créer vos propres pipes !
+Plusieurs pipes sont disponibles par défaut dans Angular, et permettent de formatter des chaînes de caractères, des montants d'argent, des dates...
+Et bien entendu, vous pouvez également créer vos propres pipes !
 
 == Modifier le héros
 
-Les utilisateurs de l'application devrait pouvoir modifier le nom du héro via un input de type texte.
+Les utilisateurs de l'application devrait pouvoir modifier le nom du héros via un input de type texte.
 
-L'input devrait à la fois afficher l'attribut `name` du héros et mettre à jour cette propriété en temps réel lorsque l'utilisateur modifie la valeur de l'input. Cela signifie que la donnée doit transiter du template vers la classe mais également de la classe vers le template.
+L'input devrait à la fois afficher l'attribut `name` du héros et mettre à jour cette propriété en temps réel lorsque l'utilisateur modifie la valeur de l'input.
+Cela signifie que la donnée doit transiter du template vers la classe mais également de la classe vers le template.
 
 Pour automatiser ce lien, nous allons mettre en place un "two-way data binding" entre l'élément `<input>` et l'attribut `hero.name`.
 
@@ -163,7 +177,9 @@ import { FormsModule } from '@angular/forms';
 
 Ajoutez ensuite le FormsModule au tableau d'imports dans les metadata de `@NgModule`, sous le `BrowserModule`.
 
-TIP: La plupart des IDE modernes (comme VSCode et Webstorm/IDEA) disposent d'une fonction d'import automatique des symboles utilisés dans les fichiers Angular. Il suffit alors d'ajouter le symbole souhaité directement dans le code (dans notre cas, dans le tableau des imports), et l'IDE suggérera d'ajouter la ligne d'import automatiquement. Sur Webstorm/IDEA, le raccourci dédié pour ce faire est Alt+Entrée.
+TIP: La plupart des IDE modernes (comme VSCode et Webstorm/IDEA) disposent d'une fonction d'import automatique des symboles utilisés dans les fichiers Angular.
+Il suffit alors d'ajouter le symbole souhaité directement dans le code (dans notre cas, dans le tableau des imports), et l'IDE suggérera d'ajouter la ligne d'import automatiquement.
+Sur Webstorm/IDEA, le raccourci dédié pour ce faire est Alt+Entrée.
 
 Lorsque le navigateur se rafraîchira, l'erreur devrait disparaître et vous devriez pouvoir modifier le nom du héros, et voir les modifications en temps réel.
 

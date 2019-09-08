@@ -79,7 +79,8 @@ Les composants Angular sont (presque) toujours décomposés en 4 fichiers:
 == Premiers pas
 
 Ouvrez le projet dans votre IDE favori (Webstorm est fortement indiqué, Visual Studio Code est un bon choix également).
-Dans l'arborescence du projet, naviguez jusqu'au répertoire `src/app`, c'est ici que se situent les fichiers de notre application Angular. C'est donc ici que vous effectuerez vos premières modifications.
+Dans l'arborescence du projet, naviguez jusqu'au répertoire `src/app`, c'est ici que se situent les fichiers de notre application Angular.
+C'est donc ici que vous effectuerez vos premières modifications.
 
 === Modifier le titre de l'application
 
