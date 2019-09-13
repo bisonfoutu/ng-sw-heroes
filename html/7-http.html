@@ -995,6 +995,86 @@ Vous devriez automatiquement revenir à la liste (ou au dashboard, selon la page
 Il prend la class <code>delete</code>, affiche la lettre x et son clic est bindé sur la méthode <code>delete(hero)</code>.</p>
 </div>
 <div class="paragraph">
+<p>Remplacez le CSS du <code>HeroesComponent</code> par celui-ci pour ajouter les classes nécessaires pour le bouton de suppression:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="css" class="language-css hljs">/* HeroesComponent's private CSS styles */
+.heroes {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 15em;
+}
+.heroes li {
+  position: relative;
+  cursor: pointer;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+
+.heroes li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+
+.heroes a {
+  color: #333;
+  text-decoration: none;
+  position: relative;
+  display: block;
+  width: 250px;
+}
+
+.heroes a:hover {
+  color:#607D8B;
+}
+
+.heroes .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color:#405061;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  min-width: 16px;
+  text-align: right;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+
+button {
+  background-color: #eee;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  cursor: hand;
+  font-family: Arial;
+}
+
+button:hover {
+  background-color: #cfd8dc;
+}
+
+button.delete {
+  position: relative;
+  left: 194px;
+  top: -32px;
+  background-color: gray !important;
+  color: white;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Ajoutez ensuite la méthode <code>delete()</code> dans la classe du composant:</p>
 </div>
 <div class="listingblock">
@@ -1364,7 +1444,7 @@ Si vous avez des questions, ou que certaines notions ne sont pas claires, c&#821
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-13 11:43:36 +0200
+Last updated 2019-09-13 13:33:46 +0200
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
