@@ -78,6 +78,9 @@ Vous avez supprimé `<sw-heroes>` parce que vous n'afficherez le `HeroesComponen
 Le `<router-outlet>` indique au router où afficher les vues liées au routing.
 
 NOTE: Le `RouterOutlet` est une des directives du router qui ont été rendues disponibles dans `AppComponent` parce que `AppModule` importe `AppRoutingModule` qui exporte `RouterModule`.
+La commande `ng generate` que vous avez exécutée au début de ce tutoriel a ajouté cet import grâce au flag `--module=app`.
+Si vous créiez `app-routing.module.ts` manuellement ou via un autre outil que le CLI, vous devriez importer `AppRoutingModule` dans `app.module.ts`
+et l'ajouter au tableau `imports` du `NgModule`.
 
 ==== Testez-le
 

@@ -454,7 +454,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_injection_du_heroservice">4.1. Injection du HeroService</a></li>
 <li><a href="#_ajouter_getheroes">4.2. Ajouter <em>getHeroes()</em></a></li>
-<li><a href="#_appel_dans_ngoninit">4.3. Appel dans ngOnInit</a></li>
+<li><a href="#_appel_dans_ngoninit">4.3. Appel dans ngOnInit()</a></li>
 <li><a href="#_relax_and_contemplate">4.4. Relax and contemplate</a></li>
 </ul>
 </li>
@@ -501,15 +501,15 @@ mais nous allons plutôt utiliser l&#8217;injection de dépendance d&#8217;Angul
 </div>
 <div class="paragraph">
 <p>Les services sont un excellent moyen de partager de l&#8217;information entre des classes qui ne se connaissent pas entre elles.
-Vous allez créer un <code>MessageService</code> et l&#8217;injecter à deux endroits:</p>
+Vous allez créer un <code>MessageService</code> et l&#8217;injecter à deux endroits.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>dans le <code>HeroService</code>, qui utilisera le service pour envoyer un message.</p>
+<p>Injecter dans le <code>HeroService</code>, qui utilisera le service pour envoyer un message.</p>
 </li>
 <li>
-<p>dans le <code>MessagesComponent</code>, qui affichera ce message.</p>
+<p>Injecter dans le <code>MessagesComponent</code>, qui affichera ce message, et affiche également l&#8217;ID quand l&#8217;utilisateur clique sur un héros.</p>
 </li>
 </ol>
 </div>
@@ -570,8 +570,8 @@ Les retours de méthodes peuvent se typer de la même manière que les attributs
 <h2 id="_mise_à_disposition_du_heroservice"><a class="anchor" href="#_mise_à_disposition_du_heroservice"></a><a class="link" href="#_mise_à_disposition_du_heroservice">3. Mise à disposition du <code>HeroService</code></a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Vous devez rendre le <code>HeroService</code> disponible pour le système d&#8217;injection de dépendance avant qu&#8217;Angular puisse l&#8217;injecter dans le <code>HeroesComponent</code>.
-Vous pouvez le faire en déclarant un <em>provider</em>. Un provider est un élément qui peut créer ou délivrer un service; dans ce cas il instancie la classe <code>HeroService</code> pour mettre à disposition le service.</p>
+<p>Vous devez rendre le <code>HeroService</code> disponible pour le système d&#8217;injection de dépendance avant qu&#8217;Angular puisse l&#8217;injecter dans le <code>HeroesComponent</code>, en enregistrant un provider.<br>
+Un provider est un élément qui peut créer ou délivrer un service; dans ce cas il instancie la classe <code>HeroService</code> pour mettre à disposition le service.</p>
 </div>
 <div class="paragraph">
 <p>Maintenant, vous devez vous assurer que le <code>HeroService</code> est déclaré comme provider de ce service.
@@ -634,7 +634,7 @@ Cette méthode, qu&#8217;on appellera sobrement <code>getHeroes</code> doit simp
 </div>
 </div>
 <div class="sect2">
-<h3 id="_appel_dans_ngoninit"><a class="anchor" href="#_appel_dans_ngoninit"></a><a class="link" href="#_appel_dans_ngoninit">4.3. Appel dans ngOnInit</a></h3>
+<h3 id="_appel_dans_ngoninit"><a class="anchor" href="#_appel_dans_ngoninit"></a><a class="link" href="#_appel_dans_ngoninit">4.3. Appel dans ngOnInit()</a></h3>
 <div class="paragraph">
 <p>Vous pourriez appeler cette méthode <code>getHeroes</code> directement dans le constructeur du composant, mais ce n&#8217;est pas une bonne pratique.</p>
 </div>
@@ -643,7 +643,7 @@ Cette méthode, qu&#8217;on appellera sobrement <code>getHeroes</code> doit simp
 Le constructeur ne devrait <em>rien faire</em>. Il ne devrait surtout pas appeler une fonction qui fait un appel HTTP à un serveur distant comme un service de données le ferait.</p>
 </div>
 <div class="paragraph">
-<p>A la place, appelez plutôt <code>getHeroes()</code> dans le <em>lifecycle hook ngOnInit</em> et laissez Angular appeler ngOnInit au moment approprié après avoir construit une instance du <code>HeroesComponent</code>.</p>
+<p>A la place, appelez plutôt <code>getHeroes()</code> dans le <em>lifecycle hook ngOnInit()</em> et laissez Angular appeler ngOnInit() au moment approprié après avoir construit une instance du <code>HeroesComponent</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -942,7 +942,7 @@ Cliquez sur le bouton, et il devrait disparaître (jusqu&#8217;au prochain recha
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-13 11:13:22 +0200
+Last updated 2021-01-21 19:57:01 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

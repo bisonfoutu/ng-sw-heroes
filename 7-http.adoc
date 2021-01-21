@@ -103,7 +103,7 @@ export class InMemoryDataService implements InMemoryDbService {
 }
 ----
 
-Ce fichier remplace `mock-heroes.ts`, que vous pouvez désormais supprimer sans risque.
+Ce fichier va remplacer `mock-heroes.ts`. En revanche, ne le supprimez pas tout de suite, il vous servira encore pendant quelques étapes de ce tutoriel.
 
 En situation projet, quand votre serveur est prêt, il suffit de détacher l' `In-memory Web API`, et les requêtes de l'application transiteront jusqu'au serveur distant.
 
@@ -149,7 +149,7 @@ Cet appel particulier à `HttpClient.get` retourne un `Observable<Hero[]>`, litt
 
 === _HttpClient.get_ retourne les données de la réponse
 
-`HttpClient.get` retourne le _body_ de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, `<Hero[]>`, vous obtenez un résultat sous forme d'objet typé.
+`HttpClient.get` retourne le _body_ de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, `<Hero[]>`, vous activez les capacités de TypeScript, ce qui réduit les erreurs à la compilation.
 
 La forme des données JSON est déterminée par l'API du serveur distant. L'API de ce tutoriel retourne les données des héros comme un tableau.
 
@@ -175,7 +175,7 @@ getHeroes (): Observable<Hero[]> {
 }
 ----
 
-L'opérateur `catchError()` intercepte un `Observable` qui a échoué. Il passe l'erreur à un _error handler_ qui peut en faire ce qu'il souhaite.
+L'opérateur `catchError()` intercepte un `Observable` qui a échoué. L'opérateur passe alors cette erreur à la méthode qui traite les erreurs.
 
 La méthode `handleError()` suivante reporte l'erreur et renvoie ensuite un résultat inoffensif pour que l'application continue à fonctionner.
 

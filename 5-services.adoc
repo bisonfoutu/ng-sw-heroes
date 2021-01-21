@@ -26,10 +26,10 @@ Nous n'allons pas instancier ce service avec le mot-clé `new` comme on instanci
 mais nous allons plutôt utiliser l'injection de dépendance d'Angular pour l'injecter dans le constructeur du `HeroesComponent`.
 
 Les services sont un excellent moyen de partager de l'information entre des classes qui ne se connaissent pas entre elles.
-Vous allez créer un `MessageService` et l'injecter à deux endroits:
+Vous allez créer un `MessageService` et l'injecter à deux endroits.
 
-1. dans le `HeroService`, qui utilisera le service pour envoyer un message.
-2. dans le `MessagesComponent`, qui affichera ce message.
+1. Injecter dans le `HeroService`, qui utilisera le service pour envoyer un message.
+2. Injecter dans le `MessagesComponent`, qui affichera ce message, et affiche également l'ID quand l'utilisateur clique sur un héros.
 
 == Création du `HeroService`
 
@@ -69,8 +69,8 @@ myMethod(): myReturnType {
 
 == Mise à disposition du `HeroService`
 
-Vous devez rendre le `HeroService` disponible pour le système d'injection de dépendance avant qu'Angular puisse l'injecter dans le `HeroesComponent`.
-Vous pouvez le faire en déclarant un _provider_. Un provider est un élément qui peut créer ou délivrer un service; dans ce cas il instancie la classe `HeroService` pour mettre à disposition le service.
+Vous devez rendre le `HeroService` disponible pour le système d'injection de dépendance avant qu'Angular puisse l'injecter dans le `HeroesComponent`, en enregistrant un provider. +
+Un provider est un élément qui peut créer ou délivrer un service; dans ce cas il instancie la classe `HeroService` pour mettre à disposition le service.
 
 Maintenant, vous devez vous assurer que le `HeroService` est déclaré comme provider de ce service.
 Vous le déclarez avec un _injector_ qui est responsable de choisir d'injecter le provider où il est nécessaire.
@@ -113,14 +113,14 @@ Cette méthode, qu'on appellera sobrement `getHeroes` doit simplement affecter �
 this.myAttribute = this.myService.myServiceMethod();
 ----
 
-=== Appel dans ngOnInit
+=== Appel dans ngOnInit()
 
 Vous pourriez appeler cette méthode `getHeroes` directement dans le constructeur du composant, mais ce n'est pas une bonne pratique.
 
 De manière générale, il vaut mieux réserver le constructeur pour des initialisations simples comme relier des paramètres du constructeur à des attributs du composant.
 Le constructeur ne devrait _rien faire_. Il ne devrait surtout pas appeler une fonction qui fait un appel HTTP à un serveur distant comme un service de données le ferait.
 
-A la place, appelez plutôt `getHeroes()` dans le _lifecycle hook ngOnInit_ et laissez Angular appeler ngOnInit au moment approprié après avoir construit une instance du `HeroesComponent`.
+A la place, appelez plutôt `getHeroes()` dans le _lifecycle hook ngOnInit()_ et laissez Angular appeler ngOnInit() au moment approprié après avoir construit une instance du `HeroesComponent`.
 
 === Relax and contemplate
 

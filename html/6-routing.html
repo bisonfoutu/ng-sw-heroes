@@ -633,6 +633,9 @@ La méthode <code>forRoot()</code> fournit les providers de service et les direc
 </td>
 <td class="content">
 Le <code>RouterOutlet</code> est une des directives du router qui ont été rendues disponibles dans <code>AppComponent</code> parce que <code>AppModule</code> importe <code>AppRoutingModule</code> qui exporte <code>RouterModule</code>.
+La commande <code>ng generate</code> que vous avez exécutée au début de ce tutoriel a ajouté cet import grâce au flag <code>--module=app</code>.
+Si vous créiez <code>app-routing.module.ts</code> manuellement ou via un autre outil que le CLI, vous devriez importer <code>AppRoutingModule</code> dans <code>app.module.ts</code>
+et l&#8217;ajouter au tableau <code>imports</code> du <code>NgModule</code>.
 </td>
 </tr>
 </table>
@@ -1210,7 +1213,7 @@ On préférera donc utiliser <code>this.router.navigate()</code> pour rediriger 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-13 11:12:56 +0200
+Last updated 2021-01-21 18:59:22 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

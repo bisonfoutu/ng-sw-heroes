@@ -167,8 +167,7 @@ La syntaxe de binding sur le clic est la suivante:
 Les parenthèses autour de `click` disent à Angular d'écouter les événements de clic sur l'élément `<li>`. Lorsque l'utilisateur clique dans le `<li>`,
 Angular exécute la méthode renseignée, dans ce cas `onSelect(hero)`.
 
-`onSelect()` est une méthode du HeroesComponent que vous allez écrire dans quelques instants.
-Elle prend pour paramètre l'objet `hero` qui est affiché dans la balise `<li>`, celui-là même qui a été défini dans la directive `*ngFor`.
+Dans la section suivante, vous allez définir une méthode `onSelect()` dans `HeroesComponent` pour afficher le héros qui a été défini dans l'expression `*ngFor`.
 
 === Ajouter le handler de l'événement de clic
 
@@ -179,7 +178,7 @@ Cette méthode prend donc un paramètre `hero` de type `Hero` (rappel de syntaxe
 
 Pour accéder à un attribut du composant au sein d'une de ses méthodes, on utilise le mot-clé `this`. Dans ce cas: `this.selectedHero`.
 
-=== Mise à jour du template
+=== Ajouter une section détails
 Nous avons renommé l'attribut dans la classe, mais le template HTML référence toujours l'ancien nom, `hero`. Faites donc les modifications nécessaires.
 
 Vous pourrez rapidement remarquer que l'application ne fonctionne plus désormais. +
@@ -193,9 +192,6 @@ Au démarrage de l'application, l'attribut `selectedHero` est volontairement `un
 
 Les bindings dans le template qui réfèrent aux attributs de `selectedHero` (e.g.: `{{ selectedHero.name }}`) doivent retourner une erreur, puisqu'il n'aucun héros n'est sélectionné.
 
-Maintenant, cliquez sur un des éléments de la liste. L'application semble fonctionner de nouveau.
-Les héros apparaissent dans la liste et les détails du héros sélectionné sont affichés en bas de page, comme prévu.
-
 ==== Le fix - cacher les détails vides avec _*ngIf_
 
 Le composant devrait afficher les détails du héros uniquement si `selectedHero` existe.
@@ -205,7 +201,10 @@ Entourez les détails du héros dans une `<div>`. Ajoutez ensuite une directive 
 TIP: Vous remarquerez la présence d'un astérisque (*) devant ngIf, comme c'est le cas devant ngFor.
 Cette syntaxe est représentative des directives Angular dites structurelles, car elles modifient le DOM de l'application (le HTML final lors du rendu du template).
 
-L'erreur devrait maintenant avoir disparu.
+Quand la page se rafraîchit, la liste des noms réapparait. La zone de détail est vide. +
+Cliquez sur un héros de la liste, son détail apparaît. L'application semble fonctionner à nouveau. +
+Les héros apparaîssent sous forme d'une liste, et les détails du héros sélectionné apparaîssent en bas de la page.
+
 
 ==== Pourquoi ça fonctionne
 

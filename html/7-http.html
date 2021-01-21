@@ -631,7 +631,7 @@ export class InMemoryDataService implements InMemoryDbService {
 </div>
 </div>
 <div class="paragraph">
-<p>Ce fichier remplace <code>mock-heroes.ts</code>, que vous pouvez désormais supprimer sans risque.</p>
+<p>Ce fichier va remplacer <code>mock-heroes.ts</code>. En revanche, ne le supprimez pas tout de suite, il vous servira encore pendant quelques étapes de ce tutoriel.</p>
 </div>
 <div class="paragraph">
 <p>En situation projet, quand votre serveur est prêt, il suffit de détacher l' <code>In-memory Web API</code>, et les requêtes de l&#8217;application transiteront jusqu&#8217;au serveur distant.</p>
@@ -697,7 +697,7 @@ export class InMemoryDataService implements InMemoryDbService {
 <div class="sect2">
 <h3 id="_httpclient_get_retourne_les_données_de_la_réponse"><a class="anchor" href="#_httpclient_get_retourne_les_données_de_la_réponse"></a><a class="link" href="#_httpclient_get_retourne_les_données_de_la_réponse">3.3. <em>HttpClient.get</em> retourne les données de la réponse</a></h3>
 <div class="paragraph">
-<p><code>HttpClient.get</code> retourne le <em>body</em> de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, <code>&lt;Hero[]&gt;</code>, vous obtenez un résultat sous forme d&#8217;objet typé.</p>
+<p><code>HttpClient.get</code> retourne le <em>body</em> de la réponse comme un objet JSON non-typé par défaut. En appliquant un spécifieur de type optionnel, <code>&lt;Hero[]&gt;</code>, vous activez les capacités de TypeScript, ce qui réduit les erreurs à la compilation.</p>
 </div>
 <div class="paragraph">
 <p>La forme des données JSON est déterminée par l&#8217;API du serveur distant. L&#8217;API de ce tutoriel retourne les données des héros comme un tableau.</p>
@@ -740,7 +740,7 @@ La méthode <code>HeroService.getHeroes()</code> devrait catcher les erreurs et 
 </div>
 </div>
 <div class="paragraph">
-<p>L&#8217;opérateur <code>catchError()</code> intercepte un <code>Observable</code> qui a échoué. Il passe l&#8217;erreur à un <em>error handler</em> qui peut en faire ce qu&#8217;il souhaite.</p>
+<p>L&#8217;opérateur <code>catchError()</code> intercepte un <code>Observable</code> qui a échoué. L&#8217;opérateur passe alors cette erreur à la méthode qui traite les erreurs.</p>
 </div>
 <div class="paragraph">
 <p>La méthode <code>handleError()</code> suivante reporte l&#8217;erreur et renvoie ensuite un résultat inoffensif pour que l&#8217;application continue à fonctionner.</p>
@@ -1444,7 +1444,7 @@ Si vous avez des questions, ou que certaines notions ne sont pas claires, c&#821
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-13 13:33:46 +0200
+Last updated 2021-01-21 19:28:07 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -453,7 +453,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_ajouter_un_binding_sur_lévénement_de_clic">3.1. Ajouter un binding sur l&#8217;événement de clic</a></li>
 <li><a href="#_ajouter_le_handler_de_lévénement_de_clic">3.2. Ajouter le handler de l&#8217;événement de clic</a></li>
-<li><a href="#_mise_à_jour_du_template">3.3. Mise à jour du template</a>
+<li><a href="#_ajouter_une_section_détails">3.3. Ajouter une section détails</a>
 <ul class="sectlevel3">
 <li><a href="#_que_sest_il_passé">3.3.1. Que s&#8217;est-il passé ?</a></li>
 <li><a href="#_le_fix_cacher_les_détails_vides_avec_ngif">3.3.2. Le fix - cacher les détails vides avec <em>*ngIf</em></a></li>
@@ -694,8 +694,7 @@ et uniquement dans des cas particuliers (c&#8217;est comme les !important, si il
 Angular exécute la méthode renseignée, dans ce cas <code>onSelect(hero)</code>.</p>
 </div>
 <div class="paragraph">
-<p><code>onSelect()</code> est une méthode du HeroesComponent que vous allez écrire dans quelques instants.
-Elle prend pour paramètre l&#8217;objet <code>hero</code> qui est affiché dans la balise <code>&lt;li&gt;</code>, celui-là même qui a été défini dans la directive <code>*ngFor</code>.</p>
+<p>Dans la section suivante, vous allez définir une méthode <code>onSelect()</code> dans <code>HeroesComponent</code> pour afficher le héros qui a été défini dans l&#8217;expression <code>*ngFor</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -712,7 +711,7 @@ Cette méthode prend donc un paramètre <code>hero</code> de type <code>Hero</co
 </div>
 </div>
 <div class="sect2">
-<h3 id="_mise_à_jour_du_template"><a class="anchor" href="#_mise_à_jour_du_template"></a><a class="link" href="#_mise_à_jour_du_template">3.3. Mise à jour du template</a></h3>
+<h3 id="_ajouter_une_section_détails"><a class="anchor" href="#_ajouter_une_section_détails"></a><a class="link" href="#_ajouter_une_section_détails">3.3. Ajouter une section détails</a></h3>
 <div class="paragraph">
 <p>Nous avons renommé l&#8217;attribut dans la classe, mais le template HTML référence toujours l&#8217;ancien nom, <code>hero</code>. Faites donc les modifications nécessaires.</p>
 </div>
@@ -740,10 +739,6 @@ HeroesComponent.html:3 ERROR TypeError: Cannot read property 'name' of undefined
 <div class="paragraph">
 <p>Les bindings dans le template qui réfèrent aux attributs de <code>selectedHero</code> (e.g.: <code>{{ selectedHero.name }}</code>) doivent retourner une erreur, puisqu&#8217;il n&#8217;aucun héros n&#8217;est sélectionné.</p>
 </div>
-<div class="paragraph">
-<p>Maintenant, cliquez sur un des éléments de la liste. L&#8217;application semble fonctionner de nouveau.
-Les héros apparaissent dans la liste et les détails du héros sélectionné sont affichés en bas de page, comme prévu.</p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_le_fix_cacher_les_détails_vides_avec_ngif"><a class="anchor" href="#_le_fix_cacher_les_détails_vides_avec_ngif"></a><a class="link" href="#_le_fix_cacher_les_détails_vides_avec_ngif">3.3.2. Le fix - cacher les détails vides avec <em>*ngIf</em></a></h4>
@@ -767,7 +762,9 @@ Cette syntaxe est représentative des directives Angular dites structurelles, ca
 </table>
 </div>
 <div class="paragraph">
-<p>L&#8217;erreur devrait maintenant avoir disparu.</p>
+<p>Quand la page se rafraîchit, la liste des noms réapparait. La zone de détail est vide.<br>
+Cliquez sur un héros de la liste, son détail apparaît. L&#8217;application semble fonctionner à nouveau.<br>
+Les héros apparaîssent sous forme d&#8217;une liste, et les détails du héros sélectionné apparaîssent en bas de la page.</p>
 </div>
 </div>
 <div class="sect3">
@@ -848,7 +845,7 @@ La condition <code>1 == '1' ` renvoie `true</code>, tandis que `1 === '1' ` renv
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-13 11:12:56 +0200
+Last updated 2021-01-21 19:52:26 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
