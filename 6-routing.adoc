@@ -420,7 +420,7 @@ Dans `ngOnInit()`, appelez la méthode `getHero()` que vous allez écrire dans u
 
 Définissez `getHero()` comme suit:
 
-1. Définissez une constante id prenant pour valeur `+this.route.snapshot.paramMap.get('id');`
+1. Définissez une constante id prenant pour valeur `Number(this.route.snapshot.paramMap.get('id'));`
 2. Appelez la méthode `heroService.getHero(id)` que vous allez définir un peu plus tard.
 3. Effectuez un subscribe sur cette méthode du service, et dans ce subscribe assignez la valeur de retour `hero` à l'attribut `hero` du composant.
 
@@ -433,7 +433,7 @@ Les paramètres de route sont toujours des strings. L'opérateur (+) convertit l
 Ouvrez `HeroService` et ajoutez-y cette méthode `getHero()`.
 [source, javascript]
 ----
-getHero(id: number): Observable<Hero> {
+getHero(id: number): Observable<Hero | undefined> {
   // TODO: send the message _after_ fetching the hero
   this.messageService.add(`HeroService: fetched hero id=${id}`);
   return of(HEROES.find(hero => hero.id === id));
