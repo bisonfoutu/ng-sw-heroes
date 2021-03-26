@@ -414,6 +414,9 @@ Nous ferons ici une exception pour le nommage de l'attribut qui va instancier `A
 
 `Location` est un service Angular pour interagir avec le navigateur. Vous l'utiliserez plus tard pour naviguer en arrière vers la vue qui vous a amené ici.
 
+WARNING: L'objet `Location` existe de base en JavaScript, de fait votre IDE ne va probablement pas vous proposer de l'importer dans le composant.
+Vous devrez donc l'importer manuellement comme ceci: `import { Location } from '@angular/common'`
+
 === Extraire le paramètre _id_
 
 Dans `ngOnInit()`, appelez la méthode `getHero()` que vous allez écrire dans un instant.
