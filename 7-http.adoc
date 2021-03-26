@@ -302,12 +302,12 @@ Dans la classe, ajoutez la méthode `add()` suivante:
 [source, javascript]
 ----
 add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.heroService.addHero({ name } as Hero).subscribe(hero => {
-      this.heroes = this.heroes ? [...this.heroes, hero] : [hero];
-    });
-  }
+  name = name.trim();
+  if (!name) { return; }
+  this.heroService.addHero({ name } as Hero).subscribe(hero => {
+    this.heroes = this.heroes ? [...this.heroes, hero] : [hero];
+  });
+}
 ----
 
 Quand le nom donné n'est pas vide ou uniquement composé d'espaces, la méthode crée un objet `Hero`-like à partir du nom (il ne lui manque que l'id), et le passe à la méthode `addHero()` du service.
@@ -414,7 +414,7 @@ Ajoutez ensuite la méthode `delete()` dans la classe du composant:
 [source, javascript]
 ----
 delete(hero: Hero): void {
-  this.heroes = this.heroes.filter(h => h !== hero);
+  this.heroes = this.heroes?.filter(h => h !== hero);
   this.heroService.deleteHero(hero).subscribe();
 }
 ----

@@ -1083,7 +1083,7 @@ button.delete {
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">delete(hero: Hero): void {
-  this.heroes = this.heroes.filter(h =&gt; h !== hero);
+  this.heroes = this.heroes?.filter(h =&gt; h !== hero);
   this.heroService.deleteHero(hero).subscribe();
 }</code></pre>
 </div>
@@ -1447,7 +1447,7 @@ Si vous avez des questions, ou que certaines notions ne sont pas claires, c&#821
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-26 13:48:50 +0100
+Last updated 2021-03-26 13:53:24 +0100
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
