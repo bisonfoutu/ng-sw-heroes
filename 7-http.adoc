@@ -114,7 +114,7 @@ Ouvrez le `HeroService`, et injectez HttpClient dans un attribut privé http dan
 Vous allez utiliser régulièrement `messageService.add()`, il serait donc judicieux de la sortir dans une méthode privée `log()`:
 [source, javascript]
 ----
-private log(message: string) {
+private log(message: string): void {
   this.messageService.add(`HeroService: ${message}`);
 }
 ----
