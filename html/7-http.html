@@ -775,19 +775,19 @@ avec le nom de l&#8217;opération qui a échoué et une valeur de retour inoffen
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">private handleError&lt;T&gt; (operation = 'operation', result?: T) {
-  return (error: any): Observable&lt;T&gt; =&gt; {
+<pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">private handleError&lt;T&gt;(operation = 'operation', result?: T): (error: any) =&gt; Observable&lt;T&gt; {
+    return (error: any): Observable&lt;T&gt; =&gt; {
 
-    // TODO: send the error to remote logging infrastructure
-    console.error(error); // log to console instead
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
 
-    // TODO: better job of transforming error for user consumption
-    this.log(`${operation} failed: ${error.message}`);
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
 
-    // Let the app keep running by returning an empty result.
-    return of(result as T);
-  };
-}</code></pre>
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -946,13 +946,12 @@ Vous devriez automatiquement revenir à la liste (ou au dashboard, selon la page
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-javascript hljs" data-lang="javascript">add(name: string): void {
-  name = name.trim();
-  if (!name) { return; }
-  this.heroService.addHero({ name } as Hero)
-    .subscribe(hero =&gt; {
-      this.heroes.push(hero);
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.addHero({ name } as Hero).subscribe(hero =&gt; {
+      this.heroes = this.heroes ? [...this.heroes, hero] : [hero];
     });
-}</code></pre>
+  }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1448,7 +1447,7 @@ Si vous avez des questions, ou que certaines notions ne sont pas claires, c&#821
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-26 12:08:53 +0100
+Last updated 2021-03-26 13:48:50 +0100
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

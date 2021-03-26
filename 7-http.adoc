@@ -193,19 +193,19 @@ avec le nom de l'opération qui a échoué et une valeur de retour inoffensive:
 
 [source, javascript]
 ----
-private handleError<T> (operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
+private handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {
+    return (error: any): Observable<T> => {
 
-    // TODO: send the error to remote logging infrastructure
-    console.error(error); // log to console instead
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
 
-    // TODO: better job of transforming error for user consumption
-    this.log(`${operation} failed: ${error.message}`);
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
 
-    // Let the app keep running by returning an empty result.
-    return of(result as T);
-  };
-}
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 ----
 
 Après avoir reporté l'erreur dans la console, le handler construit un message plus "user-friendly" et retourne une valeur inoffensive pour que l'application continue à fonctionner.
@@ -302,13 +302,12 @@ Dans la classe, ajoutez la méthode `add()` suivante:
 [source, javascript]
 ----
 add(name: string): void {
-  name = name.trim();
-  if (!name) { return; }
-  this.heroService.addHero({ name } as Hero)
-    .subscribe(hero => {
-      this.heroes.push(hero);
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.addHero({ name } as Hero).subscribe(hero => {
+      this.heroes = this.heroes ? [...this.heroes, hero] : [hero];
     });
-}
+  }
 ----
 
 Quand le nom donné n'est pas vide ou uniquement composé d'espaces, la méthode crée un objet `Hero`-like à partir du nom (il ne lui manque que l'id), et le passe à la méthode `addHero()` du service.
