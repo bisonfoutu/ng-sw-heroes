@@ -268,7 +268,7 @@ La méthode `HttpClient.put()` prend 3 paramètres:
 
 L'URL est inchangée. L'API web des héros sait quel héros modifier en regardant l' `id` du héros.
 
-L'API des héros attend un header HTTP spécifique dans les requêtes de sauvegarde. Ce header est dans la constante `httpOptions` définie dans le `HeroService`, que vous pouvez ajouter de suite:
+L'API des héros attend un header HTTP spécifique dans les requêtes de sauvegarde. Ce header est dans la constante `httpOptions` définie dans le `HeroService`, que vous pouvez ajouter de suite entre la liste des imports et l'annotation `@Injectable`:
 [source, javascript]
 ----
 const httpOptions = {
