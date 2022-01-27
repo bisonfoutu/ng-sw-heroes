@@ -454,7 +454,7 @@ Notez que:
 Dans ce dernier exercice, vous allez apprendre à chaîner les opérateurs d' `Observable` pour minimiser le nombre d'appels HTTP similaires et consommer la bande passante de manière économique.
 
 Vous allez ajouter une feature de recherche de héros sur le dashboard.
-Quand l'utilisateur va taper un nom dans le champ de recherche, vous ferez des récupérerez au fur et à mesure les héros correspondant à ce nom.
+Quand l'utilisateur va taper un nom dans le champ de recherche, vous récupérerez au fur et à mesure les héros correspondant à ce nom.
 Votre but est d'émettre juste le nombre nécessaire de requêtes HTTP.
 
 ==== _HeroService.searchHeroes_
