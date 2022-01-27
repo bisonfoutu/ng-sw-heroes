@@ -79,7 +79,7 @@ Par défaut, la commande du CLI Angular `ng generate service` déclare un provid
 
 Si vous regardez l'instruction `@Injectable` juste au-dessus de la définition de la classe `HeroService`, vous pourrez constater que la metadata `providedIn` a bien pour valeur 'root'.
 
-Quand vous "providez" le service au niveau root, Angular crée une unique instance partagée du `HeroService`, and l'injecte dans toute classe qui le demande.
+Quand vous "providez" le service au niveau root, Angular crée une unique instance partagée du `HeroService`, et l'injecte dans toute classe qui le demande.
 Déclarer le provider dans les metadata d' `@Injectable()` permet également à Angular d'optimiser une application en retirant le service s'il n'est finalement pas utilisé.
 
 Le `HeroService` est désormais prêt à être connecté au `HeroesComponent`.
