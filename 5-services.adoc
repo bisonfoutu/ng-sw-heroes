@@ -217,7 +217,7 @@ Ouvrez le `MessageService` et ajoutez-y les éléments suivants:
 
 * un attribut messages de type `string[]` initialisé à un tableau vide (`[]`).
 * une méthode add prenant pour paramètre un `message` de type `string`, qui ajoute ce message au tableau `this.messages`.
-* une méthode clear qui ne prend pas de paramètre, et qui ré-assigne `this.message` à un tableau vide.
+* une méthode clear qui ne prend pas de paramètre, et qui ré-assigne `this.messages` à un tableau vide.
 
 Le service expose donc son cache de `messages` et 2 méthodes, l'un qui ajoute un message au cache, et l'autre qui nettoie ce cache.
 
