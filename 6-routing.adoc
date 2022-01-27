@@ -150,7 +150,7 @@ ng g c dashboard
 
 Nous allons commencer par implémenter les méthodes du dashboard.
 
-1. Créer un attribut heroes, le type comme tableau de héros, et l'initialiser avec un tableau vide.
+1. Créer un attribut heroes, le typer comme tableau de héros, et l'initialiser avec un tableau vide.
 2. Créer une méthode `getHeroes` qui va subscribe à la méthode du `heroService` (qu'il faudra préalablement ajouter dans le constructor).
 3. Dans le subscribe, ajouter l'instruction suivante: `heroes => this.heroes = heroes.slice(1, 5)`.
 4. Appeler la méthode `getHeroes` dans `ngOnInit`.
