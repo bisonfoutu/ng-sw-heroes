@@ -309,9 +309,9 @@ Ouvrez le template d' `HeroesComponent` et supprimez l'élément `<sw-hero-detai
 
 === Ajouter une route vers le détail
 
-Une URL comme `~/detail/:id` pourrait être une bonne route pour naviguer vers la vue de détail du héros dont l' `id` est `11`.
+Une URL comme `~/heroes/:id` pourrait être une bonne route pour naviguer vers la vue de détail du héros dont l' `id` est `11`.
 
-Ouvrez `AppRoutingModule` et ajoutez une route de path `detail/:id` pour le `HeroDetailComponent`.
+Ouvrez `AppRoutingModule` et ajoutez une route de path `heroes/:id` pour le `HeroDetailComponent`.
 
 Les deux points (:) dans le `path` indiquent que `:id` est un placeholder pour un id de héros.
 
@@ -451,7 +451,7 @@ Cela vous permettra de ré-implémenter `getHero()` comme un vrai appel Http san
 
 ==== Testez-le
 
-Au rafraîchissement du navigateur, l'application devrait à nouveau fonctionner. Essayez d'accéder manuellement à l'URL `localhost:4200/detail/13` et vous devriez voir les détails de Chewbacca.
+Au rafraîchissement du navigateur, l'application devrait à nouveau fonctionner. Essayez d'accéder manuellement à l'URL `localhost:4200/heroes/13` et vous devriez voir les détails de Chewbacca.
 
 === Trouver le chemin du retour
 

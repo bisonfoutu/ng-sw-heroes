@@ -969,10 +969,10 @@ La vue de la liste des héros ne devrait plus afficher les détails comme elle l
 <div class="sect2">
 <h3 id="_ajouter_une_route_vers_le_détail"><a class="anchor" href="#_ajouter_une_route_vers_le_détail"></a><a class="link" href="#_ajouter_une_route_vers_le_détail">5.2. Ajouter une route vers le détail</a></h3>
 <div class="paragraph">
-<p>Une URL comme <code>~/detail/:id</code> pourrait être une bonne route pour naviguer vers la vue de détail du héros dont l' <code>id</code> est <code>11</code>.</p>
+<p>Une URL comme <code>~/heroes/:id</code> pourrait être une bonne route pour naviguer vers la vue de détail du héros dont l' <code>id</code> est <code>11</code>.</p>
 </div>
 <div class="paragraph">
-<p>Ouvrez <code>AppRoutingModule</code> et ajoutez une route de path <code>detail/:id</code> pour le <code>HeroDetailComponent</code>.</p>
+<p>Ouvrez <code>AppRoutingModule</code> et ajoutez une route de path <code>heroes/:id</code> pour le <code>HeroDetailComponent</code>.</p>
 </div>
 <div class="paragraph">
 <p>Les deux points (:) dans le <code>path</code> indiquent que <code>:id</code> est un placeholder pour un id de héros.</p>
@@ -1180,7 +1180,7 @@ Cela vous permettra de ré-implémenter <code>getHero()</code> comme un vrai app
 <div class="sect3">
 <h4 id="_testez_le_2"><a class="anchor" href="#_testez_le_2"></a><a class="link" href="#_testez_le_2">6.2.1. Testez-le</a></h4>
 <div class="paragraph">
-<p>Au rafraîchissement du navigateur, l&#8217;application devrait à nouveau fonctionner. Essayez d&#8217;accéder manuellement à l&#8217;URL <code>localhost:4200/detail/13</code> et vous devriez voir les détails de Chewbacca.</p>
+<p>Au rafraîchissement du navigateur, l&#8217;application devrait à nouveau fonctionner. Essayez d&#8217;accéder manuellement à l&#8217;URL <code>localhost:4200/heroes/13</code> et vous devriez voir les détails de Chewbacca.</p>
 </div>
 </div>
 </div>
@@ -1226,7 +1226,7 @@ On préférera donc utiliser <code>this.router.navigate()</code> pour rediriger 
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-28 00:18:09 +0100
+Last updated 2022-01-28 00:23:39 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
