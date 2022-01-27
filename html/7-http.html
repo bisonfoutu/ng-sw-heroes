@@ -732,10 +732,9 @@ La méthode <code>HeroService.getHeroes()</code> devrait catcher les erreurs et 
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code data-lang="javascript" class="language-javascript hljs">getHeroes (): Observable&lt;Hero[]&gt; {
-  return this.http.get&lt;Hero[]&gt;(this.heroesUrl)
-    .pipe(
-      catchError(this.handleError&lt;Hero[]&gt;('getHeroes', []))
-    );
+  return this.http.get&lt;Hero[]&gt;(this.heroesUrl).pipe(
+    catchError(this.handleError&lt;Hero[]&gt;('getHeroes', []))
+  );
 }</code></pre>
 </div>
 </div>
@@ -1443,7 +1442,7 @@ Si vous avez des questions, ou que certaines notions ne sont pas claires, c&#821
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-28 00:23:39 +0100
+Last updated 2022-01-28 00:38:18 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
