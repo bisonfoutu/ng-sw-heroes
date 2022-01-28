@@ -624,7 +624,7 @@ Il annule les observables des recherches précédentes, retournant uniquement le
 NOTE: Avec l'opérateur `switchMap`, chaque clé qui a passé `debounce` et `distinctUntilChanged` peut déclencher un appel à `HttpClient.get()`.
 Même avec une pause de 300ms entre les requêtes, vous pourriez avoir plusieurs requêtes HTTP en cours et elles pourraient ne pas répondre dans l'ordre où elles ont été envoyées. +
 `switchMap` préserve l'ordre original des requêtes en ne renvoyant que l'observable de l'appel HTTP le plus récent. Les résultats des appels précédents sont annulés. +
-Notez qu`annuler` un précédent _Observable_ de `searchHeroes()` ne met pas fin à la requête HTTP concernée. Les résulats sont simplement ignorés avant d'atteindre le code de l'application.
+Notez qu'annuler un précédent _Observable_ de `searchHeroes()` ne met pas fin à la requête HTTP concernée. Les résulats sont simplement ignorés avant d'atteindre le code de l'application.
 
 N'oubliez pas que la classe du composant ne subscribe pas à l'_observable_ `heroes$`. C'est le job de l' `AsyncPipe` dans le template.
 
