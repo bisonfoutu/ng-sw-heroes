@@ -39,8 +39,6 @@ NOTE: Le sélecteur du composant permet à un composant parent de l'identifier e
 
 * La classe du composant (qui doit toujours être exportée pour pouvoir être importée dans d'autres fichiers, notamment pour le déclarer dans un module).
 
-* `ngOnInit()` est un _lifecycle hook_. Angular appelle cette méthode peu après avoir créé un composant. C'est l'endroit privilégié pour placer le code d'initialisation du composant.
-
 === Ajouter un attribut _hero_
 Ajoutez un attribut `hero` dans la classe du component HeroesComponent, prenant pour valeur `'Jar Jar Binks' `.
 
