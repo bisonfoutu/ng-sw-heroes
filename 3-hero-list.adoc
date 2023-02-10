@@ -173,6 +173,20 @@ Dans la section suivante, vous allez définir une méthode `onSelect()` dans `He
 
 Renommez l'attribut `hero` du component en `selectedHero`, mais ne lui assignez pas de valeur. Aucun héros ne doit être sélectionné au démarrage de l'application.
 
+Après avoir supprimé la valeur initiale de `selectedHero`, une erreur devrait apparaître concernant son type. En effet, un attribut ou une variable non assignée en JavaScript a la valeur (et aussi le type) `undefined`. Comme nous avons indiqué que `selectedHero` est de type `Hero`, `undefined` n'est pas une valeur autorisée. Pour corriger le problème, nous devons donc indiquer à TypeScript que cette valeur est attendue, comme dans cet exemple:
+
+[source, javascript]
+----
+selectedHero?: Hero;
+----
+
+Dans la pratique, c'est une syntaxe plus courte équivalente à celle-ci:
+
+[source, javascript]
+----
+selectedHero: Hero | null | undefined;
+----
+
 Ajoutez ensuite la méthode `onSelect()`, qui assigne le héros passé en paramètre à l'attribut `selectedHero` que vous venez de renommer.
 Cette méthode prend donc un paramètre `hero` de type `Hero` (rappel de syntaxe: `param: Type`).
 

@@ -703,6 +703,22 @@ Angular exécute la méthode renseignée, dans ce cas <code>onSelect(hero)</code
 <p>Renommez l&#8217;attribut <code>hero</code> du component en <code>selectedHero</code>, mais ne lui assignez pas de valeur. Aucun héros ne doit être sélectionné au démarrage de l&#8217;application.</p>
 </div>
 <div class="paragraph">
+<p>Après avoir supprimé la valeur initiale de <code>selectedHero</code>, une erreur devrait apparaître concernant son type. En effet, un attribut ou une variable non assignée en JavaScript a la valeur (et aussi le type) <code>undefined</code>. Comme nous avons indiqué que <code>selectedHero</code> est de type <code>Hero</code>, <code>undefined</code> n&#8217;est pas une valeur autorisée. Pour corriger le problème, nous devons donc indiquer à TypeScript que cette valeur est attendue, comme dans cet exemple:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="javascript" class="language-javascript hljs">selectedHero?: Hero;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Dans la pratique, c&#8217;est une syntaxe plus courte équivalente à celle-ci:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="javascript" class="language-javascript hljs">selectedHero: Hero | null | undefined;</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Ajoutez ensuite la méthode <code>onSelect()</code>, qui assigne le héros passé en paramètre à l&#8217;attribut <code>selectedHero</code> que vous venez de renommer.
 Cette méthode prend donc un paramètre <code>hero</code> de type <code>Hero</code> (rappel de syntaxe: <code>param: Type</code>).</p>
 </div>
@@ -845,7 +861,7 @@ La condition <code>1 == '1' ` renvoie `true</code>, tandis que `1 === '1' ` renv
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-10 09:05:21 +0100
+Last updated 2023-02-10 10:01:59 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
