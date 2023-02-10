@@ -121,6 +121,12 @@ De manière générale, il vaut mieux réserver le constructeur pour des initial
 Le constructeur ne devrait _rien faire_. Il ne devrait surtout pas appeler une fonction qui fait un appel HTTP à un serveur distant comme un service de données le ferait.
 
 A la place, appelez plutôt `getHeroes()` dans le _lifecycle hook ngOnInit()_ et laissez Angular appeler ngOnInit() au moment approprié après avoir construit une instance du `HeroesComponent`.
+[source, javascript]
+----
+ngOnInit(): void {
+  this.getHeroes();
+}
+----
 
 === Relax and contemplate
 

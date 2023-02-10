@@ -645,6 +645,13 @@ Le constructeur ne devrait <em>rien faire</em>. Il ne devrait surtout pas appele
 <div class="paragraph">
 <p>A la place, appelez plutôt <code>getHeroes()</code> dans le <em>lifecycle hook ngOnInit()</em> et laissez Angular appeler ngOnInit() au moment approprié après avoir construit une instance du <code>HeroesComponent</code>.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="javascript" class="language-javascript hljs">ngOnInit(): void {
+  this.getHeroes();
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_relax_and_contemplate"><a class="anchor" href="#_relax_and_contemplate"></a><a class="link" href="#_relax_and_contemplate">4.4. Relax and contemplate</a></h3>
@@ -938,7 +945,7 @@ Cliquez sur le bouton, et il devrait disparaître (jusqu&#8217;au prochain recha
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-10 09:05:21 +0100
+Last updated 2023-02-10 09:38:06 +0100
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
