@@ -128,6 +128,11 @@ ngOnInit(): void {
 }
 ----
 
+Vous aurez également besoin d'implémenter l'interface `OnInit` en modifiant la classe du composant comme ceci:
+----
+export class HeroesComponent implements OnInit {
+----
+
 === Relax and contemplate
 
 Une fois l'application rafraîchie dans votre navigateur, prenez le temps de la tester et de constater que celle-ci affiche toujours une liste de héros, et le détail du héros voulu à la sélection.
