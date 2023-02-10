@@ -57,7 +57,7 @@ Nous allons déclarer cet attribut `hero` en tant qu'_Input_, car c'est de cette
 Pour ce faire, nous allons utiliser la syntaxe suivante:
 [source, javascript]
 ----
-@Input() hero: Hero;
+@Input() hero?: Hero;
 ----
 
 Et c'est tout ! Ce composant se contente de recevoir un héros et de l'afficher.
