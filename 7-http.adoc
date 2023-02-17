@@ -222,7 +222,7 @@ Ajoutez un opérateur `tap` au-dessus de `catchError`, et appelez-y la méthode 
 
 === Récupérer le héros par id
 
-La majorité des APIs proposent une requête de _get by id_ sous la forme `:baseURL/:id`.
+La majorité des APIs proposent une requête de _get by id_ sous la forme `baseURL/id`.
 
 Ici, la _base URL_ est `heroesURL` que nous avons défini plus tôt dans le tutoriel (`api/heroes`), et _id_ est le numéro du héros que vous souhaitez retrouver. Par exemple, `api/heroes/13`.
 
